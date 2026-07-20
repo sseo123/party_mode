@@ -1,68 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-// import Ionicons from "react-native-vector-icons/Ionicons";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { supabase } from "../../utils/hooks/supabase";
-// Import Supabase client
-
 import Header from "../components/Header";
-import { CHATBOTS } from "./ConversationScreen";
-import { BasicChatbot } from "../chatbots/BasicChatbot";
+import BasicChatbot from "../chatbots/BasicChatbot";
+
+export const CHATBOTS = {
+  BasicChatbot: {
+    id: "BasicChatbot",
+    name: "React Native Chatbot",
+    imageUrl: "https://loremflickr.com/140/140",
+    component: BasicChatbot,
+  },
+};
 
 export default function ChatScreen({ navigation }) {
-  const [chats, setChats] = useState([
-    {
-      BasicChatbot: {
-        id: "BasicChatbot",
-        name: "React Native Chatbot",
-        imageUrl: "https://loremflickr.com/140/140",
-        component: BasicChatbot,
-      },
-    },
-  ]);
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
 
-  function getChatbots() {
-    let chatbotsTemp = [];
-    for (const botId in CHATBOTS) {
-      chatbotsTemp.push({ isChatbot: true, chatId: botId });
-    }
-
-    setChats((otherChats) => [...otherChats, ...chatbotsTemp]);
-  }
-
-  // async function getUserChats() {
-  //   // Fetch user chats from Supabase
-  //   const { data: userChats, error } = await supabase
-  //     .from('conversations')
-  //     .select('id')
-  //     .select('messages');
-
-  //   if (error) {
-  //     console.error("Error fetching user chats:", error);
-  //     return;
-  //   }
-
-  //   // Add user chats to array
-  //   let userChatsTemp = [];
-  //   if (userChats) {
-  //     userChats.forEach((userChat) => {
-  //       userChatsTemp.push({ isChatbot: false, chatId: userChat.id });
-  //     });
-  //   }
-
-  //   setChats((otherChats) => [...otherChats, ...userChatsTemp]);
-  // }
-
-  useEffect(() => {
-    if (chats.length < 1) {
-      getChatbots();
-      // getUserChats();
-    }
-  }, [chats.length]);
+  const chats = Object.values(CHATBOTS);
 
   return (
     <View
@@ -70,46 +27,30 @@ export default function ChatScreen({ navigation }) {
         styles.container,
         {
           paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-          paddingLeft: insets.left,
-          paddingRight: insets.right,
           marginBottom: tabBarHeight,
         },
       ]}
     >
       <Header title="Chat" />
-      <View>
-        {chats?.map((chat) => {
-          console.log(chats);
-          return (
-            <TouchableOpacity
-              style={styles.userButton}
-              onPress={() => {
-                navigation.navigate("Conversation", {
-                  isChatbot: chat.isChatbot,
-                  chatId: chat.chatId,
-                  chatbotName: "BasicChatbot",
-                });
-              }}
-              key={chat.chatId}
-            >
-              <Ionicons
-                style={styles.userIcon}
-                name="person-outline"
-                size={36}
-                color="lightgrey"
-              />
-              <Text style={styles.userName}> {chat.chatbotName} </Text>
-              <Ionicons
-                style={styles.userCamera}
-                name="camera-outline"
-                size={24}
-                color="lightgrey"
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+
+      {chats.map((chat) => (
+        <TouchableOpacity
+          key={chat.id}
+          style={styles.userButton}
+          onPress={() =>
+            navigation.navigate("Conversation", {
+              chatbotName: chat.name,
+              chatId: chat.id,
+            })
+          }
+        >
+          <Ionicons name="person-circle" size={48} color="#D8D8D8" />
+
+          <Text style={styles.userName}>{chat.name}</Text>
+
+          <Ionicons name="camera-outline" size={24} color="#999" />
+        </TouchableOpacity>
+      ))}
     </View>
   );
 }
@@ -117,28 +58,23 @@ export default function ChatScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: "#fff",
   },
+
   userButton: {
-    padding: 25,
-    display: "flex",
-    borderBottomColor: "lightgrey",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 18,
     borderBottomWidth: 1,
+    borderColor: "#EFEFEF",
   },
-  userIcon: {
-    position: "absolute",
-    left: 5,
-    top: 5,
-  },
+
   userName: {
-    position: "absolute",
-    left: 50,
-    top: 14,
+    flex: 1,
+    marginLeft: 15,
     fontSize: 18,
-  },
-  userCamera: {
-    position: "absolute",
-    right: 15,
-    top: 10,
+    fontWeight: "600",
   },
 });
