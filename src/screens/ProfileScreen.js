@@ -21,13 +21,13 @@ const handleSignOut = async () => {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
-  const [astrology, setAstrology] = useState("Pisces");
-  const userSign = findAstrologySign();
+  //const [astrology, setAstrology] = useState("Pisces");
+  //const userSign = findAstrologySign();
 
-  (useEffect(() => {
-    setAstrology(userSign.sign);
-  }),
-    []);
+  // (useEffect(() => {
+  //   setAstrology(userSign.sign);
+  // }),
+  //   []);
 
   return (
     <View style={{ alignItems: "center" }}>
@@ -52,7 +52,7 @@ export default function ProfileScreen() {
         onPress={() => {
           navigation.navigate("Astrology");
         }}
-        title={astrology}
+        // title={astrology}
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />

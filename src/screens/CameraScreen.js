@@ -105,6 +105,7 @@ export default function CameraScreen({ navigation, focused }) {
       }
       // This part is to store images in a folder bucket named "pictureStorage"
       //uploadImage(newPhoto.uri);
+      
     }
   }
 
