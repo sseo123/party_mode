@@ -18,15 +18,16 @@ import { useNavigation } from "@react-navigation/native";
 
 import Header from "../components/Header";
 
-export default function StoriesBitmoji() {
+export default function StoriesBitmoji( {onPress} ) {
   const navigation = useNavigation();
   return (
     <View style={styles.myBitmoji}>
       <Pressable //added a presable to give the story interaction
         style={[styles.profile, styles.buttons]}
-        onPress={() => {
-          navigation.navigate("FriendStory");
-        }}
+        // onPress={() => {
+        //   navigation.navigate("FriendStory");
+        // }}
+        onPress={onPress}
       >
         <Image
           style={styles.bitmojiImage}
