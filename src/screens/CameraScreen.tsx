@@ -108,7 +108,7 @@ export default function CameraScreen() {
               setFlash((f) => (f === "off" ? "on" : "off"))
             }
           >
-            <Text style={styles.iconText}>{flash === "off" ? "⚡ off" : "⚡︎ on"}</Text>
+            <Text style={styles.iconText}>{flash === "off" ? "⚡" : "⚡︎"}</Text>
           </TouchableOpacity>
         </View>
 
@@ -195,12 +195,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
+    marginBottom: 50,
   },
   shutterInner: {
     width: 66,
     height: 66,
     borderRadius: 33,
     backgroundColor: "#fff",
+    marginBottom: 0,
   },
   flipButton: {
     width: 44,
@@ -209,6 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.35)",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 20
   },
   sendButton: {
     alignSelf: "flex-end",
@@ -216,6 +219,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 22,
     paddingVertical: 12,
     borderRadius: 24,
+    marginBottom: 40,
   },
   sendButtonText: { fontWeight: "800", color: "#111" },
 });
