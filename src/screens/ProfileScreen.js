@@ -52,7 +52,7 @@ export default function ProfileScreen() {
         onPress={() => {
           navigation.navigate("Astrology");
         }}
-        title={astrology}
+        // title={astrology}
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       />
