@@ -9,12 +9,14 @@ import {
 } from "react-native";
 import { CameraView, CameraType, FlashMode, useCameraPermissions } from "expo-camera";
 import { supabase } from "../lib/supabase";
+import VibeCheckModal from '../components/VibeCheckModal';
 
 export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [facing, setFacing] = useState<CameraType>("back");
   const [flash, setFlash] = useState<FlashMode>("off");
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const cameraRef = useRef<CameraView>(null);
 
   // --- Permission states -------------------------------------------------
@@ -37,10 +39,20 @@ export default function CameraScreen() {
 
   // --- Actions -------------------------------------------------------------
   const takePicture = async () => {
+    console.log("photo taken");
     if (!cameraRef.current) return;
     const photo = await cameraRef.current.takePictureAsync({ quality: 0.7 });
     if (photo) setPhotoUri(photo.uri);
+    //Abigail - This starts the timer after the user takes a picture
+    const startTimer = setTimeout(()=>{
+      console.log("5 seconds");
+      setModalVisible(true);
+    },5000);
   };
+
+  const handleThanks = () => {
+    setModalVisible(false);
+  }
 
   const retake = () => setPhotoUri(null);
 
@@ -114,6 +126,10 @@ export default function CameraScreen() {
             <Text style={styles.iconText}>↺</Text>
           </TouchableOpacity>
         </View>
+        <VibeCheckModal 
+        visible={modalVisible}
+        sendThanks={handleThanks}
+        />
       </SafeAreaView>
     </View>
   );
