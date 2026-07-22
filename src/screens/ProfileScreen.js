@@ -86,7 +86,7 @@ const toggleDrawer = (newOpen) => () => {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
-  // const [astrology, setAstrology] = useState("Pisces");
+  const [astrology, setAstrology] = useState("Pisces");
   // const userSign = findAstrologySign();
 
   // (useEffect(() => {

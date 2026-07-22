@@ -96,7 +96,7 @@ export default function CameraScreen() {
               setFlash((f) => (f === "off" ? "on" : "off"))
             }
           >
-            <Text style={styles.iconText}>{flash === "off" ? "⚡" : "⚡︎"}</Text>
+            <Text style={styles.iconText}>{flash === "off" ? "⚡ off" : "⚡︎ on"}</Text>
           </TouchableOpacity>
         </View>
 
