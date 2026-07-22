@@ -5,6 +5,11 @@ import { useNavigation } from "@react-navigation/native";
 import { findAstrologySign } from "../../utils/hooks/supabase";
 import { useAuthentication } from "../../utils/hooks/useAuthentication";
 
+//This will be the other code that will help me pull my drawer
+
+
+import PartyDrawer from "./PartyDrawer";
+
 
 
 
@@ -83,7 +88,6 @@ export default function ProfileScreen() {
 <Text style={styles.title}>      Party Time</Text>
 {/* This will be the componet that will hold the new feature that we are creating  */}
 <Pressable style={styles.dashedBox}
-
 // Here the navigation will redirect me to a diffrenct page, 
 onPress={() => navigation.navigate("Settings")
   }>
@@ -102,11 +106,7 @@ onPress={() => navigation.navigate("Settings")
     <Text style={styles.description}>
       Going out tonight? Make a plan to Snap with your friends.
     </Text>
-
-
-
   </View>
-
 </Pressable>
 </View>
 
