@@ -1,13 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-  TouchableOpacity,
-  Modal,
-  Pressable,
-} from "react-native";
+import { StyleSheet, Text, View, Image, SafeAreaView, TouchableOpacity, Modal, Pressable, } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
