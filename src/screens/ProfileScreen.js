@@ -5,11 +5,12 @@ import { useNavigation } from "@react-navigation/native";
 import { findAstrologySign } from "../../utils/hooks/supabase";
 import { useAuthentication } from "../../utils/hooks/useAuthentication";
 
+import { Modalize } from "react-native-modalize";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import React, { useRef } from "react";
+
 //This will be the other code that will help me pull my drawer
-
-
-import PartyDrawer from "./PartyDrawer";
-
+import PartyDrawer from "../components/PartyDrawer";
 
 
 
@@ -31,22 +32,12 @@ const handleSignOut = async () => {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
   const [astrology, setAstrology] = useState("Pisces");
+
+  const partyDrawerRef = useRef(true);
 
   // const userSign = findAstrologySign();
 
@@ -73,14 +64,8 @@ export default function ProfileScreen() {
       onPress={() => navigation.navigate("Settings")}
     />
   </View>
-
-
-  <View style={styles.overlay}>
-    <Text style={styles.name}>John Doe</Text>
-  </View>
-
-
 <View>
+
 
 
 
@@ -89,8 +74,9 @@ export default function ProfileScreen() {
 {/* This will be the componet that will hold the new feature that we are creating  */}
 <Pressable style={styles.dashedBox}
 // Here the navigation will redirect me to a diffrenct page, 
-onPress={() => navigation.navigate("Settings")
-  }>
+ onPress={() => partyDrawerRef.current?.open()} >
+
+  
   {/* Icon */}
   <Image
     source={{ uri: "https://cdn.creativefabrica.com/2021/06/21/Party-Popper-Line-Icon-Graphics-13653703-1.jpg" }}
@@ -110,9 +96,11 @@ onPress={() => navigation.navigate("Settings")
 </Pressable>
 </View>
 
+      
 
 
-      {/* <Text
+
+      {/* This line will just output the username Email <Text
         style={{
           justifyContents: "center",
           textAlign: "center",
@@ -148,11 +136,10 @@ onPress={() => navigation.navigate("Settings")
       </Pressable>
 
 
+    {/* THIS LINE WILL OPEN THE DRAWER */}
+      <PartyDrawer ref={partyDrawerRef} />
+
     </View>
-
-
-
-
   );
 }
 
