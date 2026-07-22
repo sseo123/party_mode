@@ -1,48 +1,67 @@
-// I added useState, and I touched storiesscreen.js, storiesbitmoji.js, and added assets/slide-three-image/sleeping.png
-import React, { useState, useEffect } from "react";
-
-import { View, Text, StyleSheet, Pressable, Image, ScrollView, FlatList, } from "react-native";
+// // I added useState, and I touched storiesscreen.js, storiesbitmoji.js, and added assets/slide-three-image/sleeping.png
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, StyleSheet, Pressable, Image, ScrollView, FlatList, Modal,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { fontHeader } from "../../assets/themes/font";
 import { colors } from "../../assets/themes/colors";
 import StoriesBitmoji from "../components/StoriesBitmoji";
 import DiscoverFeed from "../components/DiscoverFeed";
-import { useNavigation } from "@react-navigation/native";
-
 import Header from "../components/Header";
 
 /* Discover FlatList will render a component in the list
  * for each object in the array DATA. This is just an example I took
  * from the FlatList documentation, so feel free to change the contents.
  */
-
 const DATA = [
-  { id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba", title: "First Item", },
-  { id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63", title: "Second Item", },
-  { id: "58694a0f-3da1-471f-bd96-145571e29d72", title: "Third Item", },
+  { id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba", title: "First Item" },
+  { id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63", title: "Second Item" },
+  { id: "58694a0f-3da1-471f-bd96-145571e29d72", title: "Third Item" },
 ];
 
-export default function StoriesScreen({ route, navigation }) {
+
+
+export default function StoriesScreen() {
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
 
   const [showOverlay, setShowOverlay] = useState(false);
+  const [showDeleteNight, setShowDeleteNight] = useState(false);
+
+  const overlayTimerRef = useRef(null);
+  const deleteNightTimerRef = useRef(null);
 
   useEffect(() => {
     const timerId = setTimeout(() => {
       setShowOverlay(true);
     }, 3000);
 
-    return () => clearTimeout(timerId);
+    return () => {
+      if (overlayTimerRef.current) { clearTimeout(overlayTimerRef.current) };
+      if (deleteNightTimerRef.current) { clearTimeout(deleteNightTimerRef.current) };
+    }
   }, []);
+
+  function readyToGoHome() {
+    if (overlayTimerRef.current) clearTimeout(overlayTimerRef.current);
+    overlayTimerRef.current = setTimeout(() => {
+      setShowOverlay(true);
+    }, 3000);
+  }
+
+  function nextNight() {
+    if (deleteNightTimerRef.current) clearTimeout(deleteNightTimerRef.current);
+    deleteNightTimerRef.current = setTimeout(() => {
+      setShowDeleteNight(true);
+    }, 3000);
+  }
 
   return (
     <View
       style={[
         styles.container,
         {
-          // Paddings to handle safe area
           paddingTop: insets.top,
           paddingBottom: insets.bottom,
           paddingLeft: insets.left,
@@ -55,24 +74,8 @@ export default function StoriesScreen({ route, navigation }) {
       <View style={styles.contentContainer}>
         <View style={styles.storyBar}>
           <Text style={styles.sectionHeader}>Friends</Text>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            
-
-            //contentContainerStyle={styles.stories} commented this out because it prevented story scrolling felt unintuitive
-          >
-            <StoriesBitmoji onPress={ () => setShowOverlay(true) } />
-            {/* <StoriesBitmoji />
-            <StoriesBitmoji />
-            <StoriesBitmoji />
-            <StoriesBitmoji />
-            <StoriesBitmoji />
-            <StoriesBitmoji />
-            <StoriesBitmoji />
-            <StoriesBitmoji />
-            <StoriesBitmoji />
-            <StoriesBitmoji /> */}
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <StoriesBitmoji onPress={() => setShowOverlay(true)} />
           </ScrollView>
         </View>
         <Text style={styles.sectionHeader}>Discover</Text>
@@ -87,32 +90,102 @@ export default function StoriesScreen({ route, navigation }) {
         />
       </View>
 
-      {showOverlay && (
-        <View style={styles.overlayPage}>
-          <Image source={require("../../assets/slide-three-image/sleeping.png")} style={styles.overlayImage} resizeMode="cover"/>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showOverlay}
+        onRequestClose={() => setShowOverlay(false)}
+      >
+        <View style={[styles.modalBackdrop, { paddingBottom: tabBarHeight }]}>
+          <View style={styles.overlayPage}>
+            <Image
+              source={require("../../assets/slide-three-image/sleeping.png")}
+              style={styles.overlayImage}
+              resizeMode="cover"
+            />
 
-          <View style={styles.overlayContent}> 
-            <Text style={styles.overlayTitle}>
-              Ready to go home?
-            </Text>
-            <Text style={styles.overlaySubtitle}>
-              blah blah blah text
-            </Text>
+            <ScrollView contentContainerStyle={styles.overlayContent} showsVerticalScrollIndicator={false}>
+              <Text style={styles.overlayTitle}>Ready to go home?</Text>
+              <Text style={styles.overlaySubtitle}>One more song?</Text>
 
-            <Text style={styles.overlayDescription}>
-              blah blah blah text
-            </Text>
+              <Text style={styles.overlayDescription}>
+                Not ready to call it yet? Add a few more hours to your timer so your co-pilot can keep looking out while you keep the vibe going.
+              </Text>
 
-            <Pressable style={styles.primaryBtn} onPress={() => console.log("keep it going was pressed")}>
-              <Text style={styles.primaryBtnText}> Keep it Going</Text>
-            </Pressable>
+              <Pressable
+                style={styles.primaryBtn}
+                onPress={() => {readyToGoHome(); setShowOverlay(false)}}
+              >
+                <Text style={styles.primaryBtnText}>Keep it Going</Text>
+              </Pressable>
 
-            <Pressable style={styles.secondaryBtn} onPress={() => setShowOverlay(false)}>
-              <Text style={styles.secondaryBtnText}>Heading home</Text>
-            </Pressable>
-            </View>
+              <Pressable
+                style={styles.secondaryBtn}
+                onPress={() => {
+                  setShowOverlay(false);
+                  nextNight();
+                }}
+              >
+                <Text style={styles.secondaryBtnText}>Heading home</Text>
+              </Pressable>
+            </ScrollView>
+          </View>
         </View>
-      )}
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showDeleteNight}
+        onRequestClose={() => setShowDeleteNight(false)}
+      >
+        <View style={[styles.modalBackdrop, { paddingBottom: tabBarHeight }]}>
+          <View style={styles.overlayPage}>
+            <Image
+              source={require("../../assets/slide-three-image/deleteNight.png")}
+              style={styles.overlayImage}
+              resizeMode="cover"
+            />
+
+            <ScrollView contentContainerStyle={styles.debriefContent} showsVerticalScrollIndicator={false}>
+              <Text style={styles.overlayTitle}>So, What Happened? 👀</Text>
+              <Text style={styles.debriefDescription}>
+                You made it! Here is the official debrief from last night. Check out what went down, and piece the plot back together.
+              </Text>
+
+              <View style={styles.rowItem}>
+                <View>
+                  <Text style={styles.rowTitle}>All your snaps in one place</Text>
+                  <Text style={styles.rowSubtitle}>Flip through the highlights</Text>
+                </View>
+              </View>
+
+              <View style={styles.bitmojiRow}>
+                <Image
+                  source={require("../../assets/slide-three-image/bitmoji.png")}
+                  style={styles.bitmojiPic}
+                  resizeMode="contain"
+                />
+              </View>
+
+              <View style={styles.rowItem}>
+                <Text style={styles.rowTitle}>See who you snapped</Text>
+                <Text style={{ fontSize: 18, color: "#888" }}>›</Text>
+              </View>
+
+              <Pressable
+                style={styles.primaryBtn}
+                onPress={() => {
+                  console.log("Delete the night pressed");
+                  setShowDeleteNight(false);
+                }}
+              >
+                <Text style={styles.primaryBtnText}>Delete the Night!</Text>
+              </Pressable>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -123,7 +196,6 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   contentContainer: {
-    // padding: 12,
     display: "flex",
     flexDirection: "column",
     gap: 12,
@@ -134,12 +206,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     gap: 4,
   },
-  stories: {
-    display: "flex",
-    gap: 20,
-    width: "100%",
-    // justifyContent:"center",
-  },
   sectionHeader: {
     textAlign: "left",
     paddingVertical: 4,
@@ -148,66 +214,108 @@ const styles = StyleSheet.create({
     fontFamily: fontHeader.fontFamily,
     fontWeight: fontHeader.fontWeight,
   },
+  modalBackdrop: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
   overlayPage: {
-  ...StyleSheet.absoluteFillObject,
-  backgroundColor: "#fff",
-  zIndex: 10,
-  flexDirection: "column",
-},
-overlayImage: {
-  width: "100%",
-  height: "45%",
-},
-overlayContent: {
-  flex: 1,
-  paddingHorizontal: 24,
-  paddingTop: 16,
-  alignItems: "center",
-  justifyContent: "space-between",
-  paddingBottom: 16,
-},
-overlayTitle: {
-  fontSize: 22,
-  fontWeight: "bold",
-  color: "#000",
-  textAlign: "center",
-},
-overlaySubtitle: {
-  fontSize: 14,
-  color: "#666",
-  marginTop: 2,
-  textAlign: "center",
-},
-overlayDescription: {
-  fontSize: 13,
-  color: "#666",
-  textAlign: "center",
-  lineHeight: 18,
-  marginVertical: 12,
-},
-primaryBtn: {
-  width: "100%",
-  backgroundColor: "#A020F0",
-  paddingVertical: 16,
-  borderRadius: 30,
-  alignItems: "center",
-},
-primaryBtnText: {
-  color: "#fff",
-  fontSize: 16,
-  fontWeight: "bold",
-},
-secondaryBtn: {
-  width: "100%",
-  backgroundColor: "#EFEFEF",
-  paddingVertical: 16,
-  borderRadius: 30,
-  alignItems: "center",
-  marginTop: 8,
-},
-secondaryBtnText: {
-  color: "#000",
-  fontSize: 16,
-  fontWeight: "bold",
-},
+    flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "column",
+  },
+  overlayImage: {
+    width: "100%",
+    height: "45%",
+  },
+  overlayContent: {
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 24,
+    alignItems: "center",
+    gap: 10,
+  },
+  debriefContent: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 24,
+    gap: 12,
+  },
+  debriefDescription: {
+    fontSize: 12,
+    color: "#666",
+    textAlign: "center",
+    lineHeight: 16,
+    paddingHorizontal: 10,
+  },
+  rowItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f0f0f0",
+  },
+  rowTitle: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#000",
+  },
+  rowSubtitle: {
+    fontSize: 12,
+    color: "#777",
+    marginTop: 2,
+  },
+  bitmojiRow: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 4,
+  },
+  bitmojiPic: {
+    width: "100%",
+    height: 90,
+  },
+  overlayTitle: {
+    marginTop: 15,
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#000",
+    textAlign: "center",
+  },
+  overlaySubtitle: {
+    fontSize: 14,
+    color: "#666",
+    textAlign: "center",
+  },
+  overlayDescription: {
+    fontSize: 13,
+    color: "#666",
+    textAlign: "center",
+    lineHeight: 18,
+  },
+  primaryBtn: {
+    width: "100%",
+    backgroundColor: "#A020F0",
+    paddingVertical: 16,
+    borderRadius: 30,
+    alignItems: "center",
+    marginTop: 6,
+  },
+  primaryBtnText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  secondaryBtn: {
+    width: "100%",
+    backgroundColor: "#EFEFEF",
+    paddingVertical: 16,
+    borderRadius: 30,
+    alignItems: "center",
+    marginTop: 8,
+  },
+  secondaryBtnText: {
+    color: "#000",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
