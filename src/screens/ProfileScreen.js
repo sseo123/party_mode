@@ -7,18 +7,6 @@ import { useAuthentication } from "../../utils/hooks/useAuthentication";
 
 
 
-// import * as React from 'react';
-// import Box from '@mui/material/Box';
-// import Drawer from '@mui/material/Drawer';
-// import List from '@mui/material/List';
-// import Divider from '@mui/material/Divider';
-// import ListItem from '@mui/material/ListItem';
-// import ListItemButton from '@mui/material/ListItemButton';
-// import ListItemIcon from '@mui/material/ListItemIcon';
-// import ListItemText from '@mui/material/ListItemText';
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
-// import MailIcon from '@mui/icons-material/Mail';
-
 
 //import for a background
 import { ImageBackground } from "react-native";
@@ -86,6 +74,32 @@ export default function ProfileScreen() {
     <Text style={styles.name}>John Doe</Text>
     <Text style={styles.subtitle}>Software Engineer</Text>
   </View>
+
+
+<View>
+
+{/* This will be the componet that will hold the new feature that we are creating  */}
+<Pressable style={styles.dashedBox}>
+
+  {/* Icon */}
+  <Image
+    source={{ uri: "https://cdn.creativefabrica.com/2021/06/21/Party-Popper-Line-Icon-Graphics-13653703-1.jpg" }}
+    style={styles.icon}
+  />
+
+  {/* Text Container */}
+  <View style={styles.textContainer}>
+    <Text style={styles.title}>
+      Party Planner
+    </Text>
+
+    <Text style={styles.description}>
+      Going out tonight? Make a plan to Snap with your friends.
+    </Text>
+  </View>
+
+</Pressable>
+</View>
 
 
 
@@ -157,4 +171,38 @@ const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "cover",
   },
+dashedBox: {
+  width: "90%",
+  flexDirection: "row",
+  alignItems: "center",
+
+  padding: 16,
+  borderWidth: 1,
+  borderRadius: 12,
+  borderColor: "#ccc",
+
+  marginVertical: 10,
+},
+
+icon: {
+  width: 60,
+  height: 60,
+  borderRadius: 30,
+  marginRight: 15,
+},
+
+textContainer: {
+  flex: 1,
+},
+
+title: {
+  fontSize: 20,
+  fontWeight: "bold",
+},
+
+description: {
+  marginTop: 4,
+  fontSize: 14,
+  color: "gray",
+},
 });
