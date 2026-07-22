@@ -2,7 +2,7 @@ import { Image, Text, View, Button, StyleSheet, Pressable } from "react-native";
 import { supabase } from "../../utils/hooks/supabase";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-// import { findAstrologySign } from "../../utils/hooks/supabase";
+import { findAstrologySign } from "../../utils/hooks/supabase";
 import { useAuthentication } from "../../utils/hooks/useAuthentication";
 
 const handleSignOut = async () => {
@@ -21,13 +21,13 @@ const handleSignOut = async () => {
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user } = useAuthentication();
-  const [astrology, setAstrology] = useState("Pisces");
-  const userSign = findAstrologySign();
+  // const [astrology, setAstrology] = useState("Pisces");
+  // const userSign = findAstrologySign();
 
-  (useEffect(() => {
-    setAstrology(userSign.sign);
-  }),
-    []);
+  // (useEffect(() => {
+  //   setAstrology(userSign.sign);
+  // }),
+  //   []);
 
   return (
     <View style={{ alignItems: "center" }}>
@@ -48,15 +48,23 @@ export default function ProfileScreen() {
             user.user_metadata.email.indexOf("@"), // gets part before @ of email address, should use profile username instead
           )}
       </Text>
+
+{/*       
       <Button
         onPress={() => {
-          navigation.navigate("Astrology");
+          // navigation.navigate("Astrology");
         }}
-        title={astrology}
+        // title={astrology}
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
-      />
+      /> */}
+
+
+      {/* //There is a logout button in the setting */}
       <Button onPress={handleSignOut} title="Log Out" />
+
+
+
       <Pressable>
         <Button
           onPress={() => {
