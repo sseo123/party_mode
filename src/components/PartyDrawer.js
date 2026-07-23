@@ -91,299 +91,222 @@ export default function PartyDrawer({
     onClose();
   };
 
+
+  const handleTime = () => {
+
+
+
+
+  };
+
   return (
-    <>
-      <Modal
-        visible={visible}
-        transparent
-        animationType="slide"
-        onRequestClose={handleClose}
-      >
-        <View style={styles.modalContainer}>
-          <Pressable
-            style={styles.backdrop}
-            onPress={handleClose}
-          />
+  <>
+    {/* Main Party Drawer */}
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      onRequestClose={handleClose}
+    >
+      <View style={styles.modalContainer}>
+        <Pressable
+          style={styles.backdrop}
+          onPress={handleClose}
+        />
 
-          <View style={styles.drawer}>
-            <View style={styles.drawerHandle} />
+        <View style={styles.drawer}>
+          <View style={styles.drawerHandle} />
 
-            {page === "planner" ? (
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.drawerScrollContent}
-              >
-                {/* Main title */}
-                <Text style={styles.mainTitle}>
-                  Party Mode 🪩
-                </Text>
-
-                <Text style={styles.mainDescription}>
-                  Choose your hours. Pick your co-pilot.
-                  {"\n"}
-                  Live in the moment.
-                </Text>
-
-                {/* Party Timer */}
-                <Text style={styles.sectionTitle}>
-                  Party Timer
-                </Text>
-
-                <Pressable
-                  style={styles.optionRow}
-                  onPress={() => setTimerModalVisible(true)}
-                >
-                  <View style={styles.optionIconContainer}>
-                    <Text style={styles.optionIcon}>🗓️</Text>
-                  </View>
-
-                  <View style={styles.optionTextContainer}>
-                    <Text style={styles.optionTitle}>
-                      Set your Party Timer
-                    </Text>
-
-                    <Text style={styles.optionDescription}>
-                      {selectedHours
-                        ? `${selectedHours} ${
-                            selectedHours === 1 ? "hour" : "hours"
-                          } selected`
-                        : "How long are we committing to the plot?"}
-                    </Text>
-                  </View>
-
-                  <Text style={styles.chevron}>›</Text>
-                </Pressable>
-
-                {/* Co-pilot card */}
-                <View style={styles.coPilotCard}>
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.coPilotImages}
-                  >
-                    {coPilots.map((coPilot) => {
-                      const isSelected =
-                        selectedCoPilot?.id === coPilot.id;
-
-                      return (
-                        <Pressable
-                          key={coPilot.id}
-                          style={[
-                            styles.coPilotImageButton,
-                            isSelected &&
-                              styles.selectedCoPilotImageButton,
-                          ]}
-                          onPress={() =>
-                            handleSelectCoPilot(coPilot)
-                          }
-                        >
-                          <Image
-                            source={coPilot.image}
-                            style={styles.coPilotImage}
-                          />
-                        </Pressable>
-                      );
-                    })}
-                  </ScrollView>
-
-                  <Pressable
-                    style={styles.coPilotInformation}
-                    onPress={() => {
-                      if (selectedCoPilot) {
-                        setPage("copilot");
-                      }
-                    }}
-                  >
-                    <View style={styles.optionIconContainer}>
-                      <Text style={styles.optionIcon}>☷</Text>
-                    </View>
-
-                    <View style={styles.optionTextContainer}>
-                      <Text style={styles.optionTitle}>
-                        Invite a co-pilot
-                      </Text>
-
-                      <Text style={styles.optionDescription}>
-                        {selectedCoPilot
-                          ? `${selectedCoPilot.name} selected`
-                          : "Pick a look out for tonight"}
-                      </Text>
-                    </View>
-
-                    <Text style={styles.chevron}>›</Text>
-                  </Pressable>
-                </View>
-
-                {/* Snap Map */}
-                <Text style={styles.sectionTitle}>
-                  Snap Map
-                </Text>
-
-                <Pressable
-                  style={styles.optionRow}
-                  onPress={() => {
-                    console.log("Open sharing location settings");
-                  }}
-                >
-                  <View style={styles.optionIconContainer}>
-                    <Text style={styles.optionIcon}>◎</Text>
-                  </View>
-
-                  <View style={styles.optionTextContainer}>
-                    <Text style={styles.optionTitle}>
-                      Sharing Location
-                    </Text>
-
-                    <Text style={styles.optionDescription}>
-                      with My Friends
-                    </Text>
-                  </View>
-
-                  <Text style={styles.chevron}>›</Text>
-                </Pressable>
-
-                {/* Start Party */}
-                <Pressable
-                  style={[
-                    styles.partyButton,
-                    (!selectedHours || !selectedCoPilot) &&
-                      styles.partyButtonDisabled,
-                  ]}
-                  disabled={!selectedHours || !selectedCoPilot}
-                  onPress={handleStartParty}
-                >
-                  <Text style={styles.partyButtonText}>
-                    Let’s Party!
-                  </Text>
-                </Pressable>
-
-                <Pressable
-                  style={styles.cancelButton}
-                  onPress={handleClose}
-                >
-                  <Text style={styles.cancelButtonText}>
-                    Cancel
-                  </Text>
-                </Pressable>
-              </ScrollView>
-            ) : (
-              /* Co-pilot confirmation page */
-              <View style={styles.coPilotPage}>
-                <Pressable
-                  style={styles.pageBackButton}
-                  onPress={() => setPage("planner")}
-                >
-                  <Text style={styles.pageBackText}>‹ Back</Text>
-                </Pressable>
-
-                <Text style={styles.mainTitle}>
-                  Your Co-Pilot
-                </Text>
-
-                {selectedCoPilot && (
-                  <>
-                    <Image
-                      source={selectedCoPilot.image}
-                      style={styles.selectedCoPilotImage}
-                    />
-
-                    <Text style={styles.selectedCoPilotName}>
-                      {selectedCoPilot.name}
-                    </Text>
-                  </>
-                )}
-
-                <View style={styles.summaryBox}>
-                  <Text style={styles.summaryLabel}>
-                    Party Timer
-                  </Text>
-
-                  <Text style={styles.summaryValue}>
-                    {selectedHours
-                      ? `${selectedHours} ${
-                          selectedHours === 1 ? "hour" : "hours"
-                        }`
-                      : "No timer selected"}
-                  </Text>
-                </View>
-
-                <Pressable
-                  style={styles.confirmButton}
-                  onPress={() => setPage("planner")}
-                >
-                  <Text style={styles.confirmButtonText}>
-                    Confirm Co-Pilot
-                  </Text>
-                </Pressable>
-              </View>
-            )}
-          </View>
-        </View>
-      </Modal>
-
-      {/* Timer selection modal */}
-      <Modal
-        visible={timerModalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setTimerModalVisible(false)}
-      >
-        <View style={styles.timerModalContainer}>
-          <Pressable
-            style={styles.timerBackdrop}
-            onPress={() => setTimerModalVisible(false)}
-          />
-
-          <View style={styles.timerModalContent}>
-            <Text style={styles.timerTitle}>
-              Select Party Hours
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.drawerScrollContent}
+          >
+            <Text style={styles.mainTitle}>
+              Party Mode 🪩
             </Text>
 
-            <Text style={styles.timerDescription}>
-              How long should Party Mode stay active?
+            <Text style={styles.mainDescription}>
+              Choose your hours. Pick your co-pilot.
+              {"\n"}
+              Live in the moment.
             </Text>
 
-            <View style={styles.hoursGrid}>
-              {Array.from({ length: 10 }, (_, index) => {
-                const hours = index + 1;
-                const isSelected = selectedHours === hours;
-
-                return (
-                  <Pressable
-                    key={hours}
-                    style={[
-                      styles.hourButton,
-                      isSelected && styles.selectedHourButton,
-                    ]}
-                    onPress={() => handleSelectHours(hours)}
-                  >
-                    <Text
-                      style={[
-                        styles.hourButtonText,
-                        isSelected &&
-                          styles.selectedHourButtonText,
-                      ]}
-                    >
-                      {hours}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
+            {/* Party Timer */}
+            <Text style={styles.sectionTitle}>
+              Party Timer
+            </Text>
 
             <Pressable
-              style={styles.timerCancelButton}
-              onPress={() => setTimerModalVisible(false)}
+              style={styles.optionRow}
+              onPress={() => setTimerModalVisible(true)}
             >
-              <Text style={styles.timerCancelText}>
+              <View style={styles.optionIconContainer}>
+                <Text style={styles.optionIcon}>🗓️</Text>
+              </View>
+
+              <View style={styles.optionTextContainer}>
+                <Text style={styles.optionTitle}>
+                  Set your Party Timer
+                </Text>
+
+                <Text style={styles.optionDescription}>
+                  {selectedHours
+                    ? `${selectedHours} ${
+                        selectedHours === 1 ? "hour" : "hours"
+                      } selected`
+                    : "How long are we committing to the plot?"}
+                </Text>
+              </View>
+
+              <Text style={styles.chevron}>›</Text>
+            </Pressable>
+
+            {/* Co-pilot selection */}
+            <Text style={styles.sectionTitle}>
+              Select a Co-Pilot
+            </Text>
+
+            <View style={styles.coPilotCard}>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.coPilotImages}
+              >
+                {coPilots.map((coPilot) => {
+                  const isSelected =
+                    selectedCoPilot?.id === coPilot.id;
+
+                  return (
+                    <Pressable
+                      key={coPilot.id}
+                      style={[
+                        styles.coPilotImageButton,
+                        isSelected &&
+                          styles.selectedCoPilotImageButton,
+                      ]}
+                      onPress={() =>
+                        handleSelectCoPilot(coPilot)
+                      }
+                    >
+                      <Image
+                        source={coPilot.image}
+                        style={styles.coPilotImage}
+                      />
+                    </Pressable>
+                  );
+                })}
+              </ScrollView>
+
+              <View style={styles.coPilotInformation}>
+                <View style={styles.optionIconContainer}>
+                  <Text style={styles.optionIcon}>☷</Text>
+                </View>
+
+                <View style={styles.optionTextContainer}>
+                  <Text style={styles.optionTitle}>
+                    Invite a co-pilot
+                  </Text>
+
+                  <Text style={styles.optionDescription}>
+                    {selectedCoPilot
+                      ? `${selectedCoPilot.name} selected`
+                      : "Pick a lookout for tonight"}
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Let's Party */}
+            <Pressable
+              style={[
+                styles.partyButton,
+                (!selectedHours || !selectedCoPilot) &&
+                  styles.partyButtonDisabled,
+              ]}
+              disabled={!selectedHours || !selectedCoPilot}
+              onPress={handleStartParty}
+            >
+              <Text style={styles.partyButtonText}>
+                Let’s Party!
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={styles.cancelButton}
+              onPress={handleClose}
+            >
+              <Text style={styles.cancelButtonText}>
                 Cancel
               </Text>
             </Pressable>
-          </View>
+          </ScrollView>
         </View>
-      </Modal>
-    </>
-  );
+      </View>
+    </Modal>
+
+    {/* Timer Selection Modal */}
+    <Modal
+      visible={timerModalVisible}
+      transparent
+      animationType="fade"
+      onRequestClose={() => setTimerModalVisible(false)}
+    >
+      <View style={styles.timerModalContainer}>
+        <Pressable
+          style={styles.timerBackdrop}
+          onPress={() => setTimerModalVisible(false)}
+        />
+
+        <View style={styles.timerModalContent}>
+          <Text style={styles.timerTitle}>
+            Select Party Hours
+          </Text>
+
+          <Text style={styles.timerDescription}>
+            How long should Party Mode stay active?
+          </Text>
+
+          <View style={styles.hoursGrid}>
+            {Array.from({ length: 10 }, (_, index) => {
+              const hours = index + 1;
+              const isSelected = selectedHours === hours;
+
+              return (
+                <Pressable
+                  key={hours}
+                  style={[
+                    styles.hourButton,
+                    isSelected && styles.selectedHourButton,
+                  ]}
+                  onPress={() => handleSelectHours(hours)}
+                >
+                  <Text
+                    style={[
+                      styles.hourButtonText,
+                      isSelected &&
+                        styles.selectedHourButtonText,
+                    ]}
+                  >
+                    {hours}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+
+          <Pressable
+            style={styles.timerCancelButton}
+            onPress={() => setTimerModalVisible(false)}
+          >
+            <Text style={styles.timerCancelText}>
+              Cancel
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+    </Modal>
+  </>
+);
 }
 
 const styles = StyleSheet.create({
