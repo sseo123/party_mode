@@ -80,7 +80,7 @@ export default function CameraScreen() {
           </View>
           <View style={styles.bottomBar}>
             <TouchableOpacity style={styles.sendButton} onPress={sendSnap}>
-              <Text style={styles.sendButtonText}>Send To ▸</Text>
+              <Text style={styles.sendButtonText}>Send ▸</Text>
             </TouchableOpacity>
           </View>
         </SafeAreaView>
