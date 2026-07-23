@@ -126,7 +126,7 @@ export default function ProfileScreen() {
         <View style={styles.heroContainer}>
           <Image
             source={{
-              uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/default_profile_bitmoji (1).png",
+              uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/pier_background_bitmoji.png",
             }}
             style={styles.heroImage}
           />
@@ -146,7 +146,7 @@ export default function ProfileScreen() {
             
             <Image
   source={{
-      uri: "https://c8.alamy.com/comp/2RDTTY0/gear-icon-flat-design-machine-sprocket-gear-icon-realistic-vector-cogwheel-sign-symbol-on-a-transparent-background-2RDTTY0.jpg",
+      uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/gear-512.webp",
     }}
   style={{
     width: 28,
