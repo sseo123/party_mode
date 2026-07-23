@@ -71,7 +71,7 @@ export default function ProfileScreen() {
   const [partyVisible, setPartyVisible] = useState(false);
   const [partyMode, setPartyMode] = useState(false);
 
-  const fakeName = "Wendy Zhang";
+  const fakeName = "Isa Munoz";
   const fakeEmail = user?.email || "wendy_332";
 
   const handleOpenPartyDrawer = () => {
@@ -126,7 +126,7 @@ export default function ProfileScreen() {
         <View style={styles.heroContainer}>
           <Image
             source={{
-              uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/pier_background_bitmoji.png",
+              uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/pier_background_bitmoji.png",
             }}
             style={styles.heroImage}
           />
@@ -146,7 +146,7 @@ export default function ProfileScreen() {
             
             <Image
   source={{
-      uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/gear-512.webp",
+      uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/gear-512.webp",
     }}
   style={{
     width: 28,
@@ -168,14 +168,14 @@ export default function ProfileScreen() {
           <View style={styles.profileRow}>
             <Image
               source={{
-                uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/default.png",
+                uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/default.png",
               }}
               style={styles.profileImage}
             />
 
             <View style={styles.profileText}>
               <Text style={styles.profileName}>{fakeName}</Text>
-              <Text style={styles.profileEmail}>{fakeEmail}</Text>
+              <Text style={styles.profileEmail}>Isathewrld</Text>
             </View>
           </View>
 

@@ -1,80 +1,390 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   View,
   Text,
   Pressable,
   StyleSheet,
+  Image,
+  ScrollView,
 } from "react-native";
 
-export default function PartyDrawer ({
+const coPilots = [
+  {
+    id: "1",
+    name: "Ashley",
+    image: {
+      uri: "https://i.pravatar.cc/200?img=47",
+    },
+  },
+  {
+    id: "2",
+    name: "Jordan",
+    image: {
+      uri: "https://i.pravatar.cc/200?img=32",
+    },
+  },
+  {
+    id: "3",
+    name: "Michael",
+    image: {
+      uri: "https://i.pravatar.cc/200?img=12",
+    },
+  },
+  {
+    id: "4",
+    name: "Taylor",
+    image: {
+      uri: "https://i.pravatar.cc/200?img=25",
+    },
+  },
+  {
+    id: "5",
+    name: "Chris",
+    image: {
+      uri: "https://i.pravatar.cc/200?img=11",
+    },
+  },
+  {
+    id: "6",
+    name: "Maya",
+    image: {
+      uri: "https://i.pravatar.cc/200?img=44",
+    },
+  },
+];
+
+export default function PartyDrawer({
   visible,
-  
+  onClose,
   onStartParty,
 }) {
+  const [timerModalVisible, setTimerModalVisible] = useState(false);
+  const [selectedHours, setSelectedHours] = useState(null);
+  const [selectedCoPilot, setSelectedCoPilot] = useState(null);
+  const [page, setPage] = useState("planner");
+
+  const handleSelectHours = (hours) => {
+    setSelectedHours(hours);
+    setTimerModalVisible(false);
+  };
+
+  const handleSelectCoPilot = (coPilot) => {
+    setSelectedCoPilot(coPilot);
+    setPage("copilot");
+  };
+
+  const handleStartParty = () => {
+    onStartParty({
+      hours: selectedHours,
+      coPilot: selectedCoPilot,
+    });
+
+    setPage("planner");
+    setSelectedHours(null);
+    setSelectedCoPilot(null);
+  };
+
+  const handleClose = () => {
+    setPage("planner");
+    setTimerModalVisible(false);
+    onClose();
+  };
+
   return (
+    <>
+      <Modal
+        visible={visible}
+        transparent
+        animationType="slide"
+        onRequestClose={handleClose}
+      >
+        <View style={styles.modalContainer}>
+          <Pressable
+            style={styles.backdrop}
+            onPress={handleClose}
+          />
 
-    <Modal
-      visible={visible}
-      transparent={false}
-      animationType="slide"
-      onRequestClose={onStartParty}
-    >
-      
-      <View style={styles.modalContainer}>
-        {/* Dark background behind the drawer */}
-        <Pressable
-          style={styles.backdrop}
-          onPress={onStartParty}
-        />
+          <View style={styles.drawer}>
+            <View style={styles.drawerHandle} />
 
-        {/* Drawer */}
-        <View style={styles.drawer}>
-          <View style={styles.drawerHandle} />
+            {page === "planner" ? (
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.drawerScrollContent}
+              >
+                {/* Main title */}
+                <Text style={styles.mainTitle}>
+                  Party Mode 🪩
+                </Text>
 
-          <Text style={styles.title}>
-            Party Planner
-          </Text>
+                <Text style={styles.mainDescription}>
+                  Choose your hours. Pick your co-pilot.
+                  {"\n"}
+                  Live in the moment.
+                </Text>
 
-          <Text style={styles.description}>
-            Configure your party settings before starting party mode.
-          </Text>
+                {/* Party Timer */}
+                <Text style={styles.sectionTitle}>
+                  Party Timer
+                </Text>
 
-          <View style={styles.optionBox}>
-            <Text style={styles.optionTitle}>
-              Party Theme
-            </Text>
+                <Pressable
+                  style={styles.optionRow}
+                  onPress={() => setTimerModalVisible(true)}
+                >
+                  <View style={styles.optionIconContainer}>
+                    <Text style={styles.optionIcon}>🗓️</Text>
+                  </View>
 
-            <Text style={styles.optionDescription}>
-              Your hero image and notification color will change when party
-              mode begins.
-            </Text>
+                  <View style={styles.optionTextContainer}>
+                    <Text style={styles.optionTitle}>
+                      Set your Party Timer
+                    </Text>
+
+                    <Text style={styles.optionDescription}>
+                      {selectedHours
+                        ? `${selectedHours} ${
+                            selectedHours === 1 ? "hour" : "hours"
+                          } selected`
+                        : "How long are we committing to the plot?"}
+                    </Text>
+                  </View>
+
+                  <Text style={styles.chevron}>›</Text>
+                </Pressable>
+
+                {/* Co-pilot card */}
+                <View style={styles.coPilotCard}>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.coPilotImages}
+                  >
+                    {coPilots.map((coPilot) => {
+                      const isSelected =
+                        selectedCoPilot?.id === coPilot.id;
+
+                      return (
+                        <Pressable
+                          key={coPilot.id}
+                          style={[
+                            styles.coPilotImageButton,
+                            isSelected &&
+                              styles.selectedCoPilotImageButton,
+                          ]}
+                          onPress={() =>
+                            handleSelectCoPilot(coPilot)
+                          }
+                        >
+                          <Image
+                            source={coPilot.image}
+                            style={styles.coPilotImage}
+                          />
+                        </Pressable>
+                      );
+                    })}
+                  </ScrollView>
+
+                  <Pressable
+                    style={styles.coPilotInformation}
+                    onPress={() => {
+                      if (selectedCoPilot) {
+                        setPage("copilot");
+                      }
+                    }}
+                  >
+                    <View style={styles.optionIconContainer}>
+                      <Text style={styles.optionIcon}>☷</Text>
+                    </View>
+
+                    <View style={styles.optionTextContainer}>
+                      <Text style={styles.optionTitle}>
+                        Invite a co-pilot
+                      </Text>
+
+                      <Text style={styles.optionDescription}>
+                        {selectedCoPilot
+                          ? `${selectedCoPilot.name} selected`
+                          : "Pick a look out for tonight"}
+                      </Text>
+                    </View>
+
+                    <Text style={styles.chevron}>›</Text>
+                  </Pressable>
+                </View>
+
+                {/* Snap Map */}
+                <Text style={styles.sectionTitle}>
+                  Snap Map
+                </Text>
+
+                <Pressable
+                  style={styles.optionRow}
+                  onPress={() => {
+                    console.log("Open sharing location settings");
+                  }}
+                >
+                  <View style={styles.optionIconContainer}>
+                    <Text style={styles.optionIcon}>◎</Text>
+                  </View>
+
+                  <View style={styles.optionTextContainer}>
+                    <Text style={styles.optionTitle}>
+                      Sharing Location
+                    </Text>
+
+                    <Text style={styles.optionDescription}>
+                      with My Friends
+                    </Text>
+                  </View>
+
+                  <Text style={styles.chevron}>›</Text>
+                </Pressable>
+
+                {/* Start Party */}
+                <Pressable
+                  style={[
+                    styles.partyButton,
+                    (!selectedHours || !selectedCoPilot) &&
+                      styles.partyButtonDisabled,
+                  ]}
+                  disabled={!selectedHours || !selectedCoPilot}
+                  onPress={handleStartParty}
+                >
+                  <Text style={styles.partyButtonText}>
+                    Let’s Party!
+                  </Text>
+                </Pressable>
+
+                <Pressable
+                  style={styles.cancelButton}
+                  onPress={handleClose}
+                >
+                  <Text style={styles.cancelButtonText}>
+                    Cancel
+                  </Text>
+                </Pressable>
+              </ScrollView>
+            ) : (
+              /* Co-pilot confirmation page */
+              <View style={styles.coPilotPage}>
+                <Pressable
+                  style={styles.pageBackButton}
+                  onPress={() => setPage("planner")}
+                >
+                  <Text style={styles.pageBackText}>‹ Back</Text>
+                </Pressable>
+
+                <Text style={styles.mainTitle}>
+                  Your Co-Pilot
+                </Text>
+
+                {selectedCoPilot && (
+                  <>
+                    <Image
+                      source={selectedCoPilot.image}
+                      style={styles.selectedCoPilotImage}
+                    />
+
+                    <Text style={styles.selectedCoPilotName}>
+                      {selectedCoPilot.name}
+                    </Text>
+                  </>
+                )}
+
+                <View style={styles.summaryBox}>
+                  <Text style={styles.summaryLabel}>
+                    Party Timer
+                  </Text>
+
+                  <Text style={styles.summaryValue}>
+                    {selectedHours
+                      ? `${selectedHours} ${
+                          selectedHours === 1 ? "hour" : "hours"
+                        }`
+                      : "No timer selected"}
+                  </Text>
+                </View>
+
+                <Pressable
+                  style={styles.confirmButton}
+                  onPress={() => setPage("planner")}
+                >
+                  <Text style={styles.confirmButtonText}>
+                    Confirm Co-Pilot
+                  </Text>
+                </Pressable>
+              </View>
+            )}
           </View>
-
-          <Pressable
-            style={styles.partyButton}
-            onPress={onStartParty}
-          >
-            <Text style={styles.partyButtonText}>
-              Let's Party
-            </Text>
-          </Pressable>
-
-          <Pressable
-            style={styles.cancelButton}
-            onPress={onStartParty}
-          >
-            <Text style={styles.cancelButtonText}>
-              Cancel
-            </Text>
-          </Pressable>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+
+      {/* Timer selection modal */}
+      <Modal
+        visible={timerModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setTimerModalVisible(false)}
+      >
+        <View style={styles.timerModalContainer}>
+          <Pressable
+            style={styles.timerBackdrop}
+            onPress={() => setTimerModalVisible(false)}
+          />
+
+          <View style={styles.timerModalContent}>
+            <Text style={styles.timerTitle}>
+              Select Party Hours
+            </Text>
+
+            <Text style={styles.timerDescription}>
+              How long should Party Mode stay active?
+            </Text>
+
+            <View style={styles.hoursGrid}>
+              {Array.from({ length: 10 }, (_, index) => {
+                const hours = index + 1;
+                const isSelected = selectedHours === hours;
+
+                return (
+                  <Pressable
+                    key={hours}
+                    style={[
+                      styles.hourButton,
+                      isSelected && styles.selectedHourButton,
+                    ]}
+                    onPress={() => handleSelectHours(hours)}
+                  >
+                    <Text
+                      style={[
+                        styles.hourButtonText,
+                        isSelected &&
+                          styles.selectedHourButtonText,
+                      ]}
+                    >
+                      {hours}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+
+            <Pressable
+              style={styles.timerCancelButton}
+              onPress={() => setTimerModalVisible(false)}
+            >
+              <Text style={styles.timerCancelText}>
+                Cancel
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+    </>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -89,78 +399,324 @@ const styles = StyleSheet.create({
 
   drawer: {
     width: "100%",
-    minHeight: 350,
-    backgroundColor: "white",
-    paddingHorizontal: 24,
-    paddingTop: 12,
-    paddingBottom: 35,
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
+    maxHeight: "94%",
+    minHeight: "85%",
+    backgroundColor: "#F7F7F9",
+    paddingHorizontal: 22,
+    paddingTop: 10,
+    paddingBottom: 24,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
+
+  drawerScrollContent: {
+    paddingBottom: 20,
   },
 
   drawerHandle: {
-    width: 45,
+    width: 48,
     height: 5,
-    backgroundColor: "#CCCCCC",
+    backgroundColor: "#D4D4D4",
     borderRadius: 10,
     alignSelf: "center",
-    marginBottom: 20,
+    marginBottom: 12,
   },
 
-  title: {
+  mainTitle: {
     fontSize: 26,
-    fontWeight: "bold",
-    marginBottom: 8,
+    fontWeight: "800",
+    textAlign: "center",
+    color: "#111111",
   },
 
-  description: {
-    fontSize: 15,
-    color: "#666666",
+  mainDescription: {
+    marginTop: 3,
+    marginBottom: 18,
+    fontSize: 16,
     lineHeight: 21,
-    marginBottom: 20,
+    color: "#747474",
+    textAlign: "center",
   },
 
-  optionBox: {
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "#DDDDDD",
-    borderRadius: 14,
-    marginBottom: 24,
+  sectionTitle: {
+    marginBottom: 10,
+    marginTop: 6,
+    fontSize: 21,
+    fontWeight: "800",
+    color: "#111111",
+  },
+
+  optionRow: {
+    minHeight: 82,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 18,
+    paddingHorizontal: 15,
+    paddingVertical: 13,
+    marginBottom: 16,
+
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+
+  optionIconContainer: {
+    width: 52,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+
+  optionIcon: {
+    fontSize: 30,
+    color: "#111111",
+  },
+
+  optionTextContainer: {
+    flex: 1,
   },
 
   optionTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    marginBottom: 5,
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#111111",
   },
 
   optionDescription: {
+    marginTop: 3,
     fontSize: 14,
-    color: "#666666",
-    lineHeight: 20,
+    color: "#7B7B7B",
+  },
+
+  chevron: {
+    fontSize: 32,
+    fontWeight: "300",
+    color: "#777777",
+    marginLeft: 8,
+  },
+
+  coPilotCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 18,
+    marginBottom: 16,
+    overflow: "hidden",
+
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+
+  coPilotImages: {
+    paddingHorizontal: 14,
+    paddingTop: 14,
+    paddingBottom: 8,
+  },
+
+  coPilotImageButton: {
+    width: 62,
+    height: 82,
+    borderRadius: 14,
+    marginRight: 8,
+    overflow: "hidden",
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+
+  selectedCoPilotImageButton: {
+    borderColor: "#B225FF",
+  },
+
+  coPilotImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+
+  coPilotInformation: {
+    minHeight: 76,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
 
   partyButton: {
-    backgroundColor: "#8A2BE2",
-    paddingVertical: 15,
-    borderRadius: 14,
+    backgroundColor: "#B225FF",
+    paddingVertical: 17,
+    borderRadius: 32,
     alignItems: "center",
+    marginTop: 18,
+  },
+
+  partyButtonDisabled: {
+    backgroundColor: "#D7A4ED",
   },
 
   partyButtonText: {
-    color: "white",
-    fontSize: 17,
-    fontWeight: "bold",
+    color: "#FFFFFF",
+    fontSize: 19,
+    fontWeight: "800",
   },
 
   cancelButton: {
     paddingVertical: 14,
     alignItems: "center",
-    marginTop: 8,
   },
 
   cancelButtonText: {
+    color: "#555555",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+
+  timerModalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 24,
+  },
+
+  timerBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.55)",
+  },
+
+  timerModalContent: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 22,
+  },
+
+  timerTitle: {
+    fontSize: 23,
+    fontWeight: "800",
+    textAlign: "center",
+    color: "#111111",
+  },
+
+  timerDescription: {
+    marginTop: 5,
+    marginBottom: 18,
+    fontSize: 14,
+    color: "#777777",
+    textAlign: "center",
+  },
+
+  hoursGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+
+  hourButton: {
+    width: "18%",
+    aspectRatio: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 14,
+    backgroundColor: "#EFEFEF",
+    marginBottom: 10,
+  },
+
+  selectedHourButton: {
+    backgroundColor: "#B225FF",
+  },
+
+  hourButtonText: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#222222",
+  },
+
+  selectedHourButtonText: {
+    color: "#FFFFFF",
+  },
+
+  timerCancelButton: {
+    alignItems: "center",
+    paddingVertical: 12,
+    marginTop: 4,
+  },
+
+  timerCancelText: {
     fontSize: 16,
     color: "#555555",
+    fontWeight: "600",
+  },
+
+  coPilotPage: {
+    flex: 1,
+    alignItems: "center",
+  },
+
+  pageBackButton: {
+    alignSelf: "flex-start",
+    paddingVertical: 8,
+  },
+
+  pageBackText: {
+    fontSize: 17,
+    color: "#8A2BE2",
+    fontWeight: "700",
+  },
+
+  selectedCoPilotImage: {
+    width: 180,
+    height: 220,
+    borderRadius: 24,
+    marginTop: 28,
+    resizeMode: "cover",
+  },
+
+  selectedCoPilotName: {
+    marginTop: 15,
+    fontSize: 25,
+    fontWeight: "800",
+    color: "#111111",
+  },
+
+  summaryBox: {
+    width: "100%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 18,
+    padding: 18,
+    marginTop: 25,
+  },
+
+  summaryLabel: {
+    fontSize: 14,
+    color: "#777777",
+  },
+
+  summaryValue: {
+    marginTop: 4,
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#111111",
+  },
+
+  confirmButton: {
+    width: "100%",
+    backgroundColor: "#B225FF",
+    paddingVertical: 16,
+    borderRadius: 30,
+    alignItems: "center",
+    marginTop: 24,
+  },
+
+  confirmButtonText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "800",
   },
 });
