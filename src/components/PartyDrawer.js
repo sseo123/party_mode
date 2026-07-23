@@ -14,42 +14,42 @@ const coPilots = [
     id: "1",
     name: "Ashley",
     image: {
-      uri: "https://i.pravatar.cc/200?img=47",
+      uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/eight.png",
     },
   },
   {
     id: "2",
     name: "Jordan",
     image: {
-      uri: "https://i.pravatar.cc/200?img=32",
+      uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/seven.png",
     },
   },
   {
     id: "3",
     name: "Michael",
     image: {
-      uri: "https://i.pravatar.cc/200?img=12",
+      uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/five.png",
     },
   },
   {
     id: "4",
     name: "Taylor",
     image: {
-      uri: "https://i.pravatar.cc/200?img=25",
+      uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/one.png",
     },
   },
   {
     id: "5",
     name: "Chris",
     image: {
-      uri: "https://i.pravatar.cc/200?img=11",
+      uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/three.png",
     },
   },
   {
     id: "6",
     name: "Maya",
     image: {
-      uri: "https://i.pravatar.cc/200?img=44",
+      uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/four.png",
     },
   },
 ];
