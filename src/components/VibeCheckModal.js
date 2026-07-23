@@ -1,7 +1,15 @@
-import React from 'react';
-import { Modal, StyleSheet, Text, Pressable, View, Image, ScrollView } from 'react-native';
+import React from "react";
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  Image,
+  ScrollView,
+} from "react-native";
 
-import vibeCheck from '../../assets/slide-two-image/vibecheck_bitmoji.jpg';
+import vibeCheck from "../../assets/slide-two-image/vibecheck_bitmoji.jpg";
 
 export default function VibeCheckModal({ visible, sendThanks }) {
   return (
@@ -13,14 +21,17 @@ export default function VibeCheckModal({ visible, sendThanks }) {
       statusBarTranslucent={true}
     >
       <View style={styles.overlayPage}>
-        <Image 
-          source={vibeCheck} 
-          style={styles.overlayImage} 
-          resizeMode="cover" 
+        <Image
+          source={vibeCheck}
+          style={styles.overlayImage}
+          resizeMode="cover"
         />
 
         <View style={styles.overlayContent}>
-          <ScrollView contentContainerStyle={styles.overlayContent} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            contentContainerStyle={styles.overlayContent}
+            showsVerticalScrollIndicator={false}
+          >
             <Text style={styles.overlayTitle}>Vibe Check 🌀</Text>
             <Text style={styles.overlaySubtitle}>
               Your co-pilot is checking in.

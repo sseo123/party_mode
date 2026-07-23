@@ -82,6 +82,24 @@ export default function StoriesScreen() {
       ]}
     >
       <Header title="Stories" />
+      <View style={styles.contentContainer}>
+        <View style={styles.storyBar}>
+          <Text style={styles.sectionHeader}>Friends</Text>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <StoriesBitmoji onPress={() => readyToGoHome()} />
+          </ScrollView>
+        </View>
+        <Text style={styles.sectionHeader}>Discover</Text>
+        <FlatList
+          contentContainerStyle={{ paddingBottom: 250 }}
+          data={DATA}
+          horizontal={false}
+          numColumns={2}
+          ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+          renderItem={({ item }) => <DiscoverFeed title={item.title} />}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
 
       <FlatList
         data={DATA}
@@ -133,17 +151,25 @@ export default function StoriesScreen() {
               resizeMode="cover"
             />
 
-            <ScrollView contentContainerStyle={styles.overlayContent} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              contentContainerStyle={styles.overlayContent}
+              showsVerticalScrollIndicator={false}
+            >
               <Text style={styles.overlayTitle}>Ready to go home?</Text>
               <Text style={styles.overlaySubtitle}>One more song?</Text>
 
               <Text style={styles.overlayDescription}>
-                Not ready to call it yet? Add a few more hours to your timer so your co-pilot can keep looking out while you keep the vibe going.
+                Not ready to call it yet? Add a few more hours to your timer so
+                your co-pilot can keep looking out while you keep the vibe
+                going.
               </Text>
 
               <Pressable
                 style={styles.primaryBtn}
-                onPress={() => {readyToGoHome(); setShowOverlay(false)}}
+                onPress={() => {
+                  readyToGoHome();
+                  setShowOverlay(false);
+                }}
               >
                 <Text style={styles.primaryBtnText}>Keep it Going</Text>
               </Pressable>
@@ -169,6 +195,13 @@ export default function StoriesScreen() {
         visible={showDeleteNight}
         onRequestClose={() => setShowDeleteNight(false)}
       >
+        <Pressable
+          style={[styles.closeButton, { top: insets.top + 10 }]}
+          onPress={() => setShowDeleteNight(false)}
+          hitSlop={12}
+        >
+          <Text style={styles.closeButtonText}>✕</Text>
+        </Pressable>
         <View style={[styles.modalBackdrop, { paddingBottom: tabBarHeight }]}>
           <View style={styles.overlayPage}>
             <Image
@@ -177,18 +210,33 @@ export default function StoriesScreen() {
               resizeMode="cover"
             />
 
-            <ScrollView contentContainerStyle={styles.debriefContent} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              contentContainerStyle={styles.debriefContent}
+              showsVerticalScrollIndicator={false}
+            >
               <Text style={styles.overlayTitle}>So, What Happened? 👀</Text>
               <Text style={styles.debriefDescription}>
-                You made it! Here is the official debrief from last night. Check out what went down, and piece the plot back together.
+                You made it! Here is the official debrief from last night. Check
+                out what went down, and piece the plot back together.
               </Text>
 
-              <View style={styles.rowItem}>
-                <View>
-                  <Text style={styles.rowTitle}>All your snaps in one place</Text>
-                  <Text style={styles.rowSubtitle}>Flip through the highlights</Text>
+              <Pressable
+                onPress={() =>
+                  console.log("All snaps in once place was pressed")
+                }
+              >
+                <View style={styles.rowItem}>
+                  <View>
+                    <Text style={styles.rowTitle}>
+                      All your snaps in one place
+                    </Text>
+                    <Text style={styles.rowSubtitle}>
+                      Flip through the highlights
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 18, color: "#888" }}>›</Text>
                 </View>
-              </View>
+              </Pressable>
 
               <View style={styles.bitmojiRow}>
                 <Image
@@ -198,10 +246,14 @@ export default function StoriesScreen() {
                 />
               </View>
 
-              <View style={styles.rowItem}>
-                <Text style={styles.rowTitle}>See who you snapped</Text>
-                <Text style={{ fontSize: 18, color: "#888" }}>›</Text>
-              </View>
+              <Pressable
+                onPress={() => console.log("See who you snapped was pressed")}
+              >
+                <View style={styles.rowItem}>
+                  <Text style={styles.rowTitle}>See who you snapped</Text>
+                  <Text style={{ fontSize: 18, color: "#888" }}>›</Text>
+                </View>
+              </Pressable>
 
               <Pressable
                 style={styles.primaryBtn}
@@ -359,6 +411,22 @@ const styles = StyleSheet.create({
   },
   secondaryBtnText: {
     color: "#000",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  closeButton: {
+    position: "absolute",
+    left: 16,
+    zIndex: 10,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  closeButtonText: {
+    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
   },
