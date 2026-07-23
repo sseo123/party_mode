@@ -2,8 +2,21 @@ import { Image, Text, View, Button, StyleSheet, Pressable } from "react-native";
 import { supabase } from "../../utils/hooks/supabase";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-// import { findAstrologySign } from "../../utils/hooks/supabase";
+import { findAstrologySign } from "../../utils/hooks/supabase";
 import { useAuthentication } from "../../utils/hooks/useAuthentication";
+
+import { Modalize } from "react-native-modalize";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import React, { useRef } from "react";
+
+//This will be the other code that will help me pull my drawer
+import PartyDrawer from "../components/PartyDrawer";
+
+
+
+//import for a background
+import { ImageBackground } from "react-native";
+
 
 const handleSignOut = async () => {
   try {
@@ -18,10 +31,23 @@ const handleSignOut = async () => {
   }
 };
 
+
 export default function ProfileScreen() {
+
+// Here I will have a state variable which will be passed to Party Drawer
+//false will make it so the drawer is closed
+  const [partyVisible, setPartyVisible] = useState(false);
+
   const navigation = useNavigation();
   const { user } = useAuthentication();
   const [astrology, setAstrology] = useState("Pisces");
+
+
+
+  // const partyDrawerRef = useRef(true);
+  const handleStartParty = () => {
+      setPartyVisible(false);
+  }
   // const userSign = findAstrologySign();
 
   // (useEffect(() => {
@@ -30,12 +56,63 @@ export default function ProfileScreen() {
   //   []);
 
   return (
-    <View style={{ alignItems: "center" }}>
-      <Image
-        source={{ uri: "https://i.imgur.com/FxsJ3xy.jpg" }}
-        style={{ width: 150, height: 150, borderRadius: 150 / 2 }}
-      />
-      <Text
+
+    // Here will be the container that will hold the image and the icons
+    <View style={styles.heroContainer}>
+
+    {/* Hero Image */}
+    <Image
+    source={{ uri: "https://i.imgur.com/FxsJ3xy.jpg" }}
+    style={styles.heroImage}
+  />
+
+  {/* Settings button */}
+  <View style={styles.settingsButton}>
+    <Button
+      title="Settings"
+      onPress={() => navigation.navigate("Settings")}
+    />
+  </View>
+<View>
+
+  
+
+
+
+
+{/* Header will act as a title for the component */}
+<Text style={styles.title}>      Party Time</Text>
+{/* This will be the componet that will hold the new feature that we are creating  */}
+<Pressable style={styles.dashedBox}
+// Here the navigation will redirect me to a diffrenct page, 
+ onPress={() => setPartyVisible(true)} >
+
+
+
+  {/* Icon */}
+  <Image
+    source={{ uri: "https://cdn.creativefabrica.com/2021/06/21/Party-Popper-Line-Icon-Graphics-13653703-1.jpg" }}
+    style={styles.icon}
+  />
+
+  {/* Text Container */}
+  <View style={styles.textContainer}>
+    <Text style={styles.title}>
+      Party Planner
+    </Text>
+
+    <Text style={styles.description}>
+      Going out tonight? Make a plan to Snap with your friends.
+    </Text>
+  </View>
+</Pressable>
+</View>
+
+      
+
+
+
+      {/* This line will just output the username Email <Text
         style={{
           justifyContents: "center",
           textAlign: "center",
@@ -47,15 +124,18 @@ export default function ProfileScreen() {
             0,
             user.user_metadata.email.indexOf("@"), // gets part before @ of email address, should use profile username instead
           )}
-      </Text>
+      </Text> */}
+
+{/*       
       <Button
         onPress={() => {
-          navigation.navigate("Astrology");
+          // navigation.navigate("Astrology");
         }}
         // title={astrology}
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
-      />
+      /> */}
+
       <Button onPress={handleSignOut} title="Log Out" />
       <Pressable>
         <Button
@@ -63,8 +143,19 @@ export default function ProfileScreen() {
             navigation.navigate("Settings", {});
           }}
           title="Settings"
+
         />
       </Pressable>
+
+  
+    {/* THIS LINE WILL OPEN THE DRAWER */}
+      <PartyDrawer
+      //  ref={partyDrawerRef} 
+       visible={partyVisible}
+       onStartParty = {handleStartParty} />
+
+       
+
     </View>
   );
 }
@@ -75,10 +166,56 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
   },
+
   avatar: {
     width: 150,
     height: 150,
     borderRadius: 150 / 2,
     alignItems: "center",
   },
+
+  heroContainer: {
+    width: "100%",
+    height: 250,
+  },
+
+  heroImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+dashedBox: {
+  width: "90%",
+  flexDirection: "row",
+  alignItems: "center",
+
+  padding: 16,
+  borderWidth: 1,
+  borderRadius: 12,
+  borderColor: "#ccc",
+
+  marginVertical: 10,
+},
+
+icon: {
+  width: 60,
+  height: 60,
+  borderRadius: 30,
+  marginRight: 15,
+},
+
+textContainer: {
+  flex: 1,
+},
+
+title: {
+  fontSize: 20,
+  fontWeight: "bold",
+},
+
+description: {
+  marginTop: 4,
+  fontSize: 14,
+  color: "gray",
+},
 });
