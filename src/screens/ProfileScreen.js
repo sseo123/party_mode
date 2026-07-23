@@ -71,8 +71,8 @@ export default function ProfileScreen() {
   const [partyVisible, setPartyVisible] = useState(false);
   const [partyMode, setPartyMode] = useState(false);
 
-  const fakeName = "Edward Im";
-  const fakeEmail = "eddieim@gmail.com";
+  const fakeName = "example1";
+  const fakeEmail = "example1@gmail.com";
 
   const handleOpenPartyDrawer = () => {
     setPartyVisible(true);
