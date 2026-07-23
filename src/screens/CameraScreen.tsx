@@ -10,7 +10,7 @@ import {
 import { CameraView, CameraType, FlashMode, useCameraPermissions } from "expo-camera";
 import { supabase } from "../lib/supabase";
 import VibeCheckModal from '../components/VibeCheckModal';
-
+//THIS IS THE START OF ME EDITING FOR SUPABASE Ver 1
 export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [facing, setFacing] = useState<CameraType>("back");
