@@ -33,12 +33,21 @@ const handleSignOut = async () => {
 
 
 export default function ProfileScreen() {
+
+// Here I will have a state variable which will be passed to Party Drawer
+//false will make it so the drawer is closed
+  const [partyVisible, setPartyVisible] = useState(false);
+
   const navigation = useNavigation();
   const { user } = useAuthentication();
   const [astrology, setAstrology] = useState("Pisces");
 
-  const partyDrawerRef = useRef(true);
 
+
+  // const partyDrawerRef = useRef(true);
+  const handleStartParty = () => {
+      setPartyVisible(false);
+  }
   // const userSign = findAstrologySign();
 
   // (useEffect(() => {
@@ -66,6 +75,8 @@ export default function ProfileScreen() {
   </View>
 <View>
 
+  
+
 
 
 
@@ -74,9 +85,10 @@ export default function ProfileScreen() {
 {/* This will be the componet that will hold the new feature that we are creating  */}
 <Pressable style={styles.dashedBox}
 // Here the navigation will redirect me to a diffrenct page, 
- onPress={() => partyDrawerRef.current?.open()} >
+ onPress={() => setPartyVisible(true)} >
 
-  
+
+
   {/* Icon */}
   <Image
     source={{ uri: "https://cdn.creativefabrica.com/2021/06/21/Party-Popper-Line-Icon-Graphics-13653703-1.jpg" }}
@@ -135,9 +147,14 @@ export default function ProfileScreen() {
         />
       </Pressable>
 
-
+  
     {/* THIS LINE WILL OPEN THE DRAWER */}
-      <PartyDrawer ref={partyDrawerRef} />
+      <PartyDrawer
+      //  ref={partyDrawerRef} 
+       visible={partyVisible}
+       onStartParty = {handleStartParty} />
+
+       
 
     </View>
   );

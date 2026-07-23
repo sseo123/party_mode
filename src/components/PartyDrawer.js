@@ -7,23 +7,25 @@ import {
   StyleSheet,
 } from "react-native";
 
-const PartyDrawer = ({
+export default function PartyDrawer ({
   visible,
-  onClose,
+  
   onStartParty,
-}) => {
+}) {
   return (
+
     <Modal
       visible={visible}
-      transparent={true}
+      transparent={false}
       animationType="slide"
-      onRequestClose={onClose}
+      onRequestClose={onStartParty}
     >
+      
       <View style={styles.modalContainer}>
         {/* Dark background behind the drawer */}
         <Pressable
           style={styles.backdrop}
-          onPress={onClose}
+          onPress={onStartParty}
         />
 
         {/* Drawer */}
@@ -60,7 +62,7 @@ const PartyDrawer = ({
 
           <Pressable
             style={styles.cancelButton}
-            onPress={onClose}
+            onPress={onStartParty}
           >
             <Text style={styles.cancelButtonText}>
               Cancel
@@ -70,9 +72,9 @@ const PartyDrawer = ({
       </View>
     </Modal>
   );
-};
+}
 
-export default PartyDrawer;
+
 
 const styles = StyleSheet.create({
   modalContainer: {
