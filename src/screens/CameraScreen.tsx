@@ -7,9 +7,14 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
-import { CameraView, CameraType, FlashMode, useCameraPermissions } from "expo-camera";
+import {
+  CameraView,
+  CameraType,
+  FlashMode,
+  useCameraPermissions,
+} from "expo-camera";
 import { supabase } from "../lib/supabase";
-import VibeCheckModal from '../components/VibeCheckModal';
+import VibeCheckModal from "../components/VibeCheckModal";
 
 export default function CameraScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -18,6 +23,8 @@ export default function CameraScreen() {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const cameraRef = useRef<CameraView>(null);
+  //added this
+  const [uploading, setUploading] = useState(false);
 
   // --- Permission states -------------------------------------------------
   if (!permission) {
@@ -30,7 +37,10 @@ export default function CameraScreen() {
         <Text style={styles.permissionText}>
           Snap needs camera access to take Snaps.
         </Text>
-        <TouchableOpacity style={styles.permissionButton} onPress={requestPermission}>
+        <TouchableOpacity
+          style={styles.permissionButton}
+          onPress={requestPermission}
+        >
           <Text style={styles.permissionButtonText}>Enable Camera</Text>
         </TouchableOpacity>
       </View>
@@ -44,15 +54,15 @@ export default function CameraScreen() {
     const photo = await cameraRef.current.takePictureAsync({ quality: 0.7 });
     if (photo) setPhotoUri(photo.uri);
     //Abigail - This starts the timer after the user takes a picture
-    const startTimer = setTimeout(()=>{
+    const startTimer = setTimeout(() => {
       console.log("5 seconds");
       setModalVisible(true);
-    },5000);
+    }, 5000);
   };
 
   const handleThanks = () => {
     setModalVisible(false);
-  }
+  };
 
   const retake = () => setPhotoUri(null);
 
@@ -62,6 +72,7 @@ export default function CameraScreen() {
   // adding — e.g. upload the photo to Supabase Storage, save a row to a
   // "snaps" table, add a caption/sticker editor, send to a friend, post it
   // as a Story, add a disappearing timer, etc.
+
   const sendSnap = () => {
     // Placeholder — see the TODO above.
     setPhotoUri(null);
@@ -79,7 +90,10 @@ export default function CameraScreen() {
             </TouchableOpacity>
           </View>
           <View style={styles.bottomBar}>
-            <TouchableOpacity style={styles.sendButton} onPress={sendSnap}>
+            <TouchableOpacity
+              style={styles.sendButton}
+              onPress={() => console.log("send was pressed")}
+            >
               <Text style={styles.sendButtonText}>Send ▸</Text>
             </TouchableOpacity>
           </View>
@@ -104,9 +118,7 @@ export default function CameraScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.iconButton}
-            onPress={() =>
-              setFlash((f) => (f === "off" ? "on" : "off"))
-            }
+            onPress={() => setFlash((f) => (f === "off" ? "on" : "off"))}
           >
             <Text style={styles.iconText}>{flash === "off" ? "⚡" : "⚡︎"}</Text>
           </TouchableOpacity>
@@ -119,17 +131,12 @@ export default function CameraScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.flipButton}
-            onPress={() =>
-              setFacing((f) => (f === "back" ? "front" : "back"))
-            }
+            onPress={() => setFacing((f) => (f === "back" ? "front" : "back"))}
           >
             <Text style={styles.iconText}>↺</Text>
           </TouchableOpacity>
         </View>
-        <VibeCheckModal 
-        visible={modalVisible}
-        sendThanks={handleThanks}
-        />
+        <VibeCheckModal visible={modalVisible} sendThanks={handleThanks} />
       </SafeAreaView>
     </View>
   );
@@ -211,7 +218,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.35)",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 20
+    marginBottom: 20,
   },
   sendButton: {
     alignSelf: "flex-end",

@@ -101,9 +101,7 @@ export default function ProfileScreen() {
         <View style={styles.rowTextContainer}>
           <Text style={styles.rowTitle}>{item.title}</Text>
 
-          <Text style={styles.rowDescription}>
-            {item.description}
-          </Text>
+          <Text style={styles.rowDescription}>{item.description}</Text>
         </View>
 
         <Pressable
@@ -138,25 +136,20 @@ export default function ProfileScreen() {
             <Text style={styles.heroButtonText}>‹</Text>
           </Pressable>
 
-       <Pressable
+          <Pressable
             style={styles.settingsButton}
             onPress={() => navigation.navigate("Settings")}
           >
-
-            
             <Image
-  source={{
-      uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/gear-512.webp",
-    }}
-  style={{
-    width: 28,
-    height: 28,
-    tintColor: "#FFFFFF", // optional
-  }}
-/>
-
-
-
+              source={{
+                uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/gear-512.webp",
+              }}
+              style={{
+                width: 28,
+                height: 28,
+                tintColor: "#FFFFFF", // optional
+              }}
+            />
           </Pressable>
         </View>
 
@@ -206,10 +199,7 @@ export default function ProfileScreen() {
             <View style={styles.goldFeatureText}>
               <Text style={styles.goldFeatureTitle}>Snapchat+</Text>
 
-              <Text
-                style={styles.goldFeatureDescription}
-                numberOfLines={1}
-              >
+              <Text style={styles.goldFeatureDescription} numberOfLines={1}>
                 Try custom themes, icons, and exclusive features
               </Text>
             </View>
@@ -226,9 +216,7 @@ export default function ProfileScreen() {
             <Text style={styles.sectionTitle}>My Stories</Text>
 
             <Pressable style={styles.sectionButton}>
-              <Text style={styles.sectionButtonText}>
-                ＋ New Story
-              </Text>
+              <Text style={styles.sectionButtonText}>＋ New Story</Text>
             </Pressable>
           </View>
 
@@ -242,10 +230,7 @@ export default function ProfileScreen() {
           </View>
 
           <Pressable
-            style={[
-              styles.partyCard,
-              partyMode && styles.partyCardActive,
-            ]}
+            style={[styles.partyCard, partyMode && styles.partyCardActive]}
             onPress={handleOpenPartyDrawer}
           >
             <View style={styles.rowIconContainer}>
@@ -254,15 +239,10 @@ export default function ProfileScreen() {
 
             <View style={styles.rowTextContainer}>
               <Text style={styles.rowTitle}>
-                {partyMode
-                  ? "Party Mode Active"
-                  : "Party Planner"}
+                {partyMode ? "Party Mode Active" : "Party Planner"}
               </Text>
 
-              <Text
-                style={styles.rowDescription}
-                numberOfLines={1}
-              >
+              <Text style={styles.rowDescription} numberOfLines={1}>
                 {partyMode
                   ? "Your Party Mode settings are currently active."
                   : "Going out tonight? Make a plan to Snap with friends."}
@@ -283,9 +263,7 @@ export default function ProfileScreen() {
             <Text style={styles.sectionTitle}>Countdowns</Text>
 
             <Pressable style={styles.sectionButton}>
-              <Text style={styles.sectionButtonText}>
-                ＋ New
-              </Text>
+              <Text style={styles.sectionButtonText}>＋ New</Text>
             </Pressable>
           </View>
 
@@ -294,10 +272,7 @@ export default function ProfileScreen() {
           </View>
 
           <View style={styles.logoutContainer}>
-            <Button
-              title="Log Out"
-              onPress={handleSignOut}
-            />
+            <Button title="Log Out" onPress={handleSignOut} />
           </View>
         </View>
       </ScrollView>
@@ -364,10 +339,10 @@ const styles = StyleSheet.create({
   },
 
   heroButtonIcon: {
-  width: 28,
-  height: 28,
-  resizeMode: "contain",
-},
+    width: 28,
+    height: 28,
+    resizeMode: "contain",
+  },
 
   contentContainer: {
     marginTop: -26,
