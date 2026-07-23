@@ -18,14 +18,14 @@ import DiscoverFeed from "../components/DiscoverFeed";
 import Header from "../components/Header";
 
 // 1. Import your story photos
-import story1 from "../../assets/story-photos/story1.png";
-import story2 from "../../assets/story-photos/story2.png";
-import story3 from "../../assets/story-photos/story3.png";
+import story1 from "../../assets/story-pic/pic1.png";
+import story2 from "../../assets/story-pic/pic2.png";
+import story3 from "../../assets/story-pic/pic3.png";
 
 // 2. Add the imported images to the DATA items
 const DATA = [
   { id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba", title: "✌️✌️", image: story1 },
-  { id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63", title: "Clipped Sabrina", image: story2 },
+  { id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63", title: "Hello", image: story2 },
   { id: "58694a0f-3da1-471f-bd96-145571e29d72", title: "locked in rn 🤫", image: story3 },
 ];
 

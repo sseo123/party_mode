@@ -71,8 +71,8 @@ export default function ProfileScreen() {
   const [partyVisible, setPartyVisible] = useState(false);
   const [partyMode, setPartyMode] = useState(false);
 
-  const fakeName = "Wendy Zhang";
-  const fakeEmail = user?.email || "wendy_332";
+  const fakeName = "Edward Im";
+  const fakeEmail = "eddieim@gmail.com";
 
   const handleOpenPartyDrawer = () => {
     setPartyVisible(true);
@@ -123,9 +123,7 @@ export default function ProfileScreen() {
         {/* Hero section */}
         <View style={styles.heroContainer}>
           <Image
-            source={{
-              uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/pier_background_bitmoji.png",
-            }}
+            source={require("../../assets/slide-one/beach_pic.png")}
             style={styles.heroImage}
           />
 
@@ -134,22 +132,6 @@ export default function ProfileScreen() {
             onPress={() => navigation.goBack()}
           >
             <Text style={styles.heroButtonText}>‹</Text>
-          </Pressable>
-
-          <Pressable
-            style={styles.settingsButton}
-            onPress={() => navigation.navigate("Settings")}
-          >
-            <Image
-              source={{
-                uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/gear-512.webp",
-              }}
-              style={{
-                width: 28,
-                height: 28,
-                tintColor: "#FFFFFF", // optional
-              }}
-            />
           </Pressable>
         </View>
 
@@ -160,9 +142,7 @@ export default function ProfileScreen() {
           {/* User information */}
           <View style={styles.profileRow}>
             <Image
-              source={{
-                uri: "/Users/valston/Desktop/SEA - Project/First_Group_Project/party_mode/assets/snapchat/default.png",
-              }}
+              source={require("../../assets/slide-one/qr.png")}
               style={styles.profileImage}
             />
 
