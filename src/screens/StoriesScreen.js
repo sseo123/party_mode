@@ -1,6 +1,13 @@
-// // I added useState, and I touched storiesscreen.js, storiesbitmoji.js, and added assets/slide-three-image/sleeping.png
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Pressable, Image, ScrollView, FlatList, Modal,
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Image,
+  ScrollView,
+  FlatList,
+  Modal,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -10,17 +17,17 @@ import StoriesBitmoji from "../components/StoriesBitmoji";
 import DiscoverFeed from "../components/DiscoverFeed";
 import Header from "../components/Header";
 
-/* Discover FlatList will render a component in the list
- * for each object in the array DATA. This is just an example I took
- * from the FlatList documentation, so feel free to change the contents.
- */
+// 1. Import your story photos
+import story1 from "../../assets/story-photos/story1.png";
+import story2 from "../../assets/story-photos/story2.png";
+import story3 from "../../assets/story-photos/story3.png";
+
+// 2. Add the imported images to the DATA items
 const DATA = [
-  { id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba", title: "First Item" },
-  { id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63", title: "Second Item" },
-  { id: "58694a0f-3da1-471f-bd96-145571e29d72", title: "Third Item" },
+  { id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba", title: "✌️✌️", image: story1 },
+  { id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63", title: "Clipped Sabrina", image: story2 },
+  { id: "58694a0f-3da1-471f-bd96-145571e29d72", title: "locked in rn 🤫", image: story3 },
 ];
-
-
 
 export default function StoriesScreen() {
   const tabBarHeight = useBottomTabBarHeight();
@@ -38,9 +45,13 @@ export default function StoriesScreen() {
     }, 3000);
 
     return () => {
-      if (overlayTimerRef.current) { clearTimeout(overlayTimerRef.current) };
-      if (deleteNightTimerRef.current) { clearTimeout(deleteNightTimerRef.current) };
-    }
+      if (overlayTimerRef.current) {
+        clearTimeout(overlayTimerRef.current);
+      }
+      if (deleteNightTimerRef.current) {
+        clearTimeout(deleteNightTimerRef.current);
+      }
+    };
   }, []);
 
   function readyToGoHome() {
@@ -75,7 +86,7 @@ export default function StoriesScreen() {
         <View style={styles.storyBar}>
           <Text style={styles.sectionHeader}>Friends</Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <StoriesBitmoji onPress={() => setShowOverlay(true)} />
+            <StoriesBitmoji onPress={() => readyToGoHome()} />
           </ScrollView>
         </View>
         <Text style={styles.sectionHeader}>Discover</Text>
@@ -90,6 +101,42 @@ export default function StoriesScreen() {
         />
       </View>
 
+      <FlatList
+        data={DATA}
+        keyExtractor={(item) => item.id}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContentContainer}
+        columnWrapperStyle={styles.columnWrapper}
+        ListHeaderComponent={
+          <View style={styles.headerSection}>
+            {/* Friends Section */}
+            <View style={styles.sectionContainer}>
+              <Text style={styles.snapSectionHeader}>FRIENDS</Text>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.friendsScrollContainer}
+              >
+                <StoriesBitmoji onPress={() => setShowOverlay(true)} />
+              </ScrollView>
+            </View>
+
+            {/* Discover Section Title */}
+            <View style={styles.sectionContainer}>
+              <Text style={styles.snapSectionHeader}>DISCOVER</Text>
+            </View>
+          </View>
+        }
+        renderItem={({ item }) => (
+          <View style={styles.discoverItemWrapper}>
+            {/* Pass the item's title AND image prop */}
+            <DiscoverFeed title={item.title} image={item.image} />
+          </View>
+        )}
+      />
+
+      {/* --- UNTOUCHED: Ready To Go Home Modal --- */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -104,17 +151,25 @@ export default function StoriesScreen() {
               resizeMode="cover"
             />
 
-            <ScrollView contentContainerStyle={styles.overlayContent} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              contentContainerStyle={styles.overlayContent}
+              showsVerticalScrollIndicator={false}
+            >
               <Text style={styles.overlayTitle}>Ready to go home?</Text>
               <Text style={styles.overlaySubtitle}>One more song?</Text>
 
               <Text style={styles.overlayDescription}>
-                Not ready to call it yet? Add a few more hours to your timer so your co-pilot can keep looking out while you keep the vibe going.
+                Not ready to call it yet? Add a few more hours to your timer so
+                your co-pilot can keep looking out while you keep the vibe
+                going.
               </Text>
 
               <Pressable
                 style={styles.primaryBtn}
-                onPress={() => {readyToGoHome(); setShowOverlay(false)}}
+                onPress={() => {
+                  readyToGoHome();
+                  setShowOverlay(false);
+                }}
               >
                 <Text style={styles.primaryBtnText}>Keep it Going</Text>
               </Pressable>
@@ -133,12 +188,20 @@ export default function StoriesScreen() {
         </View>
       </Modal>
 
+      {/* --- UNTOUCHED: Delete The Night Modal --- */}
       <Modal
         animationType="slide"
         transparent={true}
         visible={showDeleteNight}
         onRequestClose={() => setShowDeleteNight(false)}
       >
+        <Pressable
+          style={[styles.closeButton, { top: insets.top + 10 }]}
+          onPress={() => setShowDeleteNight(false)}
+          hitSlop={12}
+        >
+          <Text style={styles.closeButtonText}>✕</Text>
+        </Pressable>
         <View style={[styles.modalBackdrop, { paddingBottom: tabBarHeight }]}>
           <View style={styles.overlayPage}>
             <Image
@@ -147,18 +210,33 @@ export default function StoriesScreen() {
               resizeMode="cover"
             />
 
-            <ScrollView contentContainerStyle={styles.debriefContent} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              contentContainerStyle={styles.debriefContent}
+              showsVerticalScrollIndicator={false}
+            >
               <Text style={styles.overlayTitle}>So, What Happened? 👀</Text>
               <Text style={styles.debriefDescription}>
-                You made it! Here is the official debrief from last night. Check out what went down, and piece the plot back together.
+                You made it! Here is the official debrief from last night. Check
+                out what went down, and piece the plot back together.
               </Text>
 
-              <View style={styles.rowItem}>
-                <View>
-                  <Text style={styles.rowTitle}>All your snaps in one place</Text>
-                  <Text style={styles.rowSubtitle}>Flip through the highlights</Text>
+              <Pressable
+                onPress={() =>
+                  console.log("All snaps in once place was pressed")
+                }
+              >
+                <View style={styles.rowItem}>
+                  <View>
+                    <Text style={styles.rowTitle}>
+                      All your snaps in one place
+                    </Text>
+                    <Text style={styles.rowSubtitle}>
+                      Flip through the highlights
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 18, color: "#888" }}>›</Text>
                 </View>
-              </View>
+              </Pressable>
 
               <View style={styles.bitmojiRow}>
                 <Image
@@ -168,10 +246,14 @@ export default function StoriesScreen() {
                 />
               </View>
 
-              <View style={styles.rowItem}>
-                <Text style={styles.rowTitle}>See who you snapped</Text>
-                <Text style={{ fontSize: 18, color: "#888" }}>›</Text>
-              </View>
+              <Pressable
+                onPress={() => console.log("See who you snapped was pressed")}
+              >
+                <View style={styles.rowItem}>
+                  <Text style={styles.rowTitle}>See who you snapped</Text>
+                  <Text style={{ fontSize: 18, color: "#888" }}>›</Text>
+                </View>
+              </Pressable>
 
               <Pressable
                 style={styles.primaryBtn}
@@ -193,27 +275,41 @@ export default function StoriesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: "relative",
+    backgroundColor: "#000",
   },
-  contentContainer: {
-    display: "flex",
-    flexDirection: "column",
+  listContentContainer: {
+    paddingHorizontal: 12,
+    paddingBottom: 100,
+  },
+  headerSection: {
+    marginBottom: 8,
+  },
+  sectionContainer: {
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  snapSectionHeader: {
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#8E8E93",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+    marginBottom: 8,
+    paddingLeft: 4,
+  },
+  friendsScrollContainer: {
+    paddingVertical: 8,
     gap: 12,
   },
-  storyBar: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: 4,
+  columnWrapper: {
+    justifyContent: "space-between",
+    marginBottom: 12,
   },
-  sectionHeader: {
-    textAlign: "left",
-    paddingVertical: 4,
-    color: colors.primary,
-    fontSize: fontHeader.fontSize,
-    fontFamily: fontHeader.fontFamily,
-    fontWeight: fontHeader.fontWeight,
+  discoverItemWrapper: {
+    flex: 0.48,
   },
+
+  /* --- Untouched Modal Styles --- */
   modalBackdrop: {
     flex: 1,
     justifyContent: "flex-end",
@@ -315,6 +411,22 @@ const styles = StyleSheet.create({
   },
   secondaryBtnText: {
     color: "#000",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  closeButton: {
+    position: "absolute",
+    left: 16,
+    zIndex: 10,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  closeButtonText: {
+    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
   },
