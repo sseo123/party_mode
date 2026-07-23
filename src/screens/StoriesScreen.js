@@ -1,4 +1,3 @@
-// // I added useState, and I touched storiesscreen.js, storiesbitmoji.js, and added assets/slide-three-image/sleeping.png
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
@@ -18,14 +17,16 @@ import StoriesBitmoji from "../components/StoriesBitmoji";
 import DiscoverFeed from "../components/DiscoverFeed";
 import Header from "../components/Header";
 
-/* Discover FlatList will render a component in the list
- * for each object in the array DATA. This is just an example I took
- * from the FlatList documentation, so feel free to change the contents.
- */
+// 1. Import your story photos
+import story1 from "../../assets/story-photos/story1.png";
+import story2 from "../../assets/story-photos/story2.png";
+import story3 from "../../assets/story-photos/story3.png";
+
+// 2. Add the imported images to the DATA items
 const DATA = [
-  { id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba", title: "First Item" },
-  { id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63", title: "Second Item" },
-  { id: "58694a0f-3da1-471f-bd96-145571e29d72", title: "Third Item" },
+  { id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba", title: "✌️✌️", image: story1 },
+  { id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63", title: "Clipped Sabrina", image: story2 },
+  { id: "58694a0f-3da1-471f-bd96-145571e29d72", title: "locked in rn 🤫", image: story3 },
 ];
 
 export default function StoriesScreen() {
@@ -100,6 +101,42 @@ export default function StoriesScreen() {
         />
       </View>
 
+      <FlatList
+        data={DATA}
+        keyExtractor={(item) => item.id}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContentContainer}
+        columnWrapperStyle={styles.columnWrapper}
+        ListHeaderComponent={
+          <View style={styles.headerSection}>
+            {/* Friends Section */}
+            <View style={styles.sectionContainer}>
+              <Text style={styles.snapSectionHeader}>FRIENDS</Text>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.friendsScrollContainer}
+              >
+                <StoriesBitmoji onPress={() => setShowOverlay(true)} />
+              </ScrollView>
+            </View>
+
+            {/* Discover Section Title */}
+            <View style={styles.sectionContainer}>
+              <Text style={styles.snapSectionHeader}>DISCOVER</Text>
+            </View>
+          </View>
+        }
+        renderItem={({ item }) => (
+          <View style={styles.discoverItemWrapper}>
+            {/* Pass the item's title AND image prop */}
+            <DiscoverFeed title={item.title} image={item.image} />
+          </View>
+        )}
+      />
+
+      {/* --- UNTOUCHED: Ready To Go Home Modal --- */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -151,6 +188,7 @@ export default function StoriesScreen() {
         </View>
       </Modal>
 
+      {/* --- UNTOUCHED: Delete The Night Modal --- */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -237,27 +275,41 @@ export default function StoriesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: "relative",
+    backgroundColor: "#000",
   },
-  contentContainer: {
-    display: "flex",
-    flexDirection: "column",
+  listContentContainer: {
+    paddingHorizontal: 12,
+    paddingBottom: 100,
+  },
+  headerSection: {
+    marginBottom: 8,
+  },
+  sectionContainer: {
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  snapSectionHeader: {
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#8E8E93",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+    marginBottom: 8,
+    paddingLeft: 4,
+  },
+  friendsScrollContainer: {
+    paddingVertical: 8,
     gap: 12,
   },
-  storyBar: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: 4,
+  columnWrapper: {
+    justifyContent: "space-between",
+    marginBottom: 12,
   },
-  sectionHeader: {
-    textAlign: "left",
-    paddingVertical: 4,
-    color: colors.primary,
-    fontSize: fontHeader.fontSize,
-    fontFamily: fontHeader.fontFamily,
-    fontWeight: fontHeader.fontWeight,
+  discoverItemWrapper: {
+    flex: 0.48,
   },
+
+  /* --- Untouched Modal Styles --- */
   modalBackdrop: {
     flex: 1,
     justifyContent: "flex-end",
