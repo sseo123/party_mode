@@ -1,7 +1,15 @@
-import React from 'react';
-import { Modal, StyleSheet, Text, Pressable, View, Image } from 'react-native';
+import React from "react";
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  Image,
+  ScrollView,
+} from "react-native";
 
-import vibeCheck from '../../assets/slide-two-image/vibecheck_bitmoji.jpg';
+import vibeCheck from "../../assets/slide-two-image/vibecheck_bitmoji.jpg";
 
 export default function VibeCheckModal({ visible, sendThanks }) {
   return (
@@ -13,33 +21,38 @@ export default function VibeCheckModal({ visible, sendThanks }) {
       statusBarTranslucent={true}
     >
       <View style={styles.overlayPage}>
-        <Image 
-          source={vibeCheck} 
-          style={styles.overlayImage} 
-          resizeMode="cover" 
+        <Image
+          source={vibeCheck}
+          style={styles.overlayImage}
+          resizeMode="cover"
         />
 
         <View style={styles.overlayContent}>
-          <Text style={styles.overlayTitle}>Vibe Check 🌀</Text>
-          <Text style={styles.overlaySubtitle}>
-            Your co-pilot is checking in.
-          </Text>
-          <Text style={styles.overlayDescription}>
-            Your co-pilot is checking in. They might have noticed a Snap you
-            just sent or posted and wanted to give you a gentle heads-up.
-          </Text>
+          <ScrollView
+            contentContainerStyle={styles.overlayContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <Text style={styles.overlayTitle}>Vibe Check 🌀</Text>
+            <Text style={styles.overlaySubtitle}>
+              Your co-pilot is checking in.
+            </Text>
+            <Text style={styles.overlayDescription}>
+              Your co-pilot is checking in. They might have noticed a Snap you
+              just sent or posted and wanted to give you a gentle heads-up.
+            </Text>
 
-          <Pressable style={styles.primaryBtn} onPress={sendThanks}>
-            <Text style={styles.primaryBtnText}>Send a Thanks</Text>
-          </Pressable>
+            <Pressable style={styles.primaryBtn} onPress={sendThanks}>
+              <Text style={styles.primaryBtnText}>Send a Thanks</Text>
+            </Pressable>
 
-          <Pressable style={styles.secondaryBtn} onPress={sendThanks}>
-            <Text style={styles.secondaryBtnText}>Keep Snapping</Text>
-          </Pressable>
+            <Pressable style={styles.secondaryBtn} onPress={sendThanks}>
+              <Text style={styles.secondaryBtnText}>Keep Snapping</Text>
+            </Pressable>
 
-          <Pressable style={styles.secondaryBtn} onPress={sendThanks}>
-            <Text style={styles.secondaryBtnText}>See Flagged Snaps</Text>
-          </Pressable>
+            <Pressable style={styles.secondaryBtn} onPress={sendThanks}>
+              <Text style={styles.secondaryBtnText}>See Flagged Snaps</Text>
+            </Pressable>
+          </ScrollView>
         </View>
       </View>
     </Modal>
