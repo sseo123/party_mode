@@ -49,7 +49,7 @@ const coPilots = [
     id: "6",
     name: "Maya",
     image: {
-      uri: "/Users/valston/Desktop/SEA - Project/party_mode/assets/snapchat/folder_page_1/four.png",
+      uri: "x",
     },
   },
 ];
@@ -218,18 +218,17 @@ export default function PartyDrawer({
 
             {/* Let's Party */}
             <Pressable
-              style={[
-                styles.partyButton,
-                (!selectedHours || !selectedCoPilot) &&
-                  styles.partyButtonDisabled,
-              ]}
-              disabled={!selectedHours || !selectedCoPilot}
-              onPress={handleStartParty}
-            >
-              <Text style={styles.partyButtonText}>
-                Let’s Party!
-              </Text>
-            </Pressable>
+  style={[
+    styles.partyButton,
+    !selectedCoPilot && styles.partyButtonDisabled,
+  ]}
+  disabled={!selectedCoPilot}
+  onPress={handleStartParty}
+>
+  <Text style={styles.partyButtonText}>
+    Let’s Party!
+  </Text>
+</Pressable>
 
             <Pressable
               style={styles.cancelButton}
